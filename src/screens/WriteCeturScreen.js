@@ -4,12 +4,12 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 // import all basic components
  
-export default class MainScreen extends Component {
-  //MainScreen Component
+export default class WriteCeturScreen extends Component {
+  //Screen3 Component
   render() {
     return (
       <View style={styles.MainContainer}>
-        <Text style={{ fontSize: 23 }}> Ana Ekran </Text>
+        <Text style={{ fontSize: 23 }}> Write Cetur Screen </Text>
       </View>
     );
   }

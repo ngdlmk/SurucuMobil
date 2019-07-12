@@ -12,7 +12,7 @@ export default class LoginScreen extends Component {
         <Text>Login Screen</Text>
         <Button
           title="Anasayfaya git"
-          onPress={() => this.props.navigation.navigate('Main')}
+          onPress={() => this.props.navigation.navigate('Menu')}
         />
       </View>
     );
