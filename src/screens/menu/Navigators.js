@@ -11,7 +11,7 @@ import ExitScreen from '../ExitScreen'
 
 var backgroundColor="#37C1CC";
 var headerTintColor="#fff";
-var menuTitle=require('./MenuTitles.json');
+var menuTitle=require('./../../data/MenuTitles.json');
 
 export const MainScreenStackNavigator = createStackNavigator({
     First: {

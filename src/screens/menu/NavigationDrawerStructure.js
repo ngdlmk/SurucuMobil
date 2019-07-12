@@ -10,7 +10,7 @@ export default class NavigationDrawerStructure extends Component {
         <View style={{ flexDirection: 'row' }}>
           <TouchableOpacity onPress={this.toggleDrawer.bind(this)}>
             <Image
-              source={require('./images/drawer.png' )}
+              source={require('./../../../assets/drawer.png' )}
               style={{ width: 25, height: 25, marginLeft: 5 }}
             />
           </TouchableOpacity>

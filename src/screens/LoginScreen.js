@@ -1,10 +1,22 @@
 import React,{Component} from "react";
-import { View, Text,Button } from "react-native";
+import { View, Text,Button, AsyncStorage  } from "react-native";
+
+var NavigateKeys=require('../data/NavigateKeys.json');
+var StorageKeys=require('../data/StorageKeys.json');
 
 export default class LoginScreen extends Component {
-    // static navigationOptions = {
-    //     header: null
-    // }
+    constructor(props){
+      super(props);
+    }
+
+    componentWillMount(){
+      AsyncStorage.getItem(StorageKeys.IsLoginKey)
+                  .then( value => {
+                    if(value=="true"){
+                      this.props.navigation.navigate(NavigateKeys.MenuKey);
+                    }
+                  })
+    }
 
   render() {
     return (
@@ -12,9 +24,15 @@ export default class LoginScreen extends Component {
         <Text>Login Screen</Text>
         <Button
           title="Anasayfaya git"
-          onPress={() => this.props.navigation.navigate('Menu')}
+          onPress={this.loginOperation.bind(this)}
         />
       </View>
     );
+  }
+
+  //methods
+  loginOperation(){
+    AsyncStorage.setItem(StorageKeys.IsLoginKey,"true");
+    this.props.navigation.navigate(NavigateKeys.MenuKey);
   }
 }

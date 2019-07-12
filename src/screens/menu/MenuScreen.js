@@ -11,7 +11,7 @@ import {MainScreenStackNavigator,
   ExitScreenStackNavigator} 
 from './Navigators'
 
-var menuTitle=require('./MenuTitles.json');
+var menuTitle=require('./../../data/MenuTitles.json');
 
 const MenuScreen = createDrawerNavigator({
   Screen1: {
