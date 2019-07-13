@@ -25,6 +25,13 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "android":{
+      "package":"com.surucumobil.cetur",
+      "versionCode":1,
+      "permissions":[],
+      "icon": "./assets/icon.png",
+    },
+    "description": ""
   }
 }

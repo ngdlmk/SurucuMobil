@@ -2,11 +2,15 @@ import React,{Component} from "react";
 import { View, Alert, Image, Text, ActivityIndicator,AsyncStorage } from 'react-native';
 import { Container, Header, Content, Item, Input, Icon, Button } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
+import {LoginService} from '../services'
+import * as Constant from '../data/Constants';
 
 var NavigateKeys=require('../data/NavigateKeys.json');
 var StorageKeys=require('../data/StorageKeys.json');
 
 export default class LoginScreen extends Component {
+    loginService = new LoginService();
+
     constructor(props){
       super(props);
 
@@ -93,7 +97,33 @@ export default class LoginScreen extends Component {
 
   //methods
   loginOperation(){
-    AsyncStorage.setItem(StorageKeys.IsLoginKey,"true");
-    this.props.navigation.navigate(NavigateKeys.MenuKey);
+    //validation
+    if(this.state.userName===""){
+        Alert.alert(Constant.ErrorText,"Email adresinizi giriniz")
+        return;
+    }
+    if(this.state.userPassword===""){
+        Alert.alert(Constant.ErrorText,"Şifrenizi giriniz")
+        return;
+    }
+
+    //control
+    this.setState({ animateLogin: true });
+
+    this.loginService.login(this.state.userName, this.state.userPassword).then(responseJson => {
+        this.setState({ animateLogin: false });
+
+        if (responseJson.IsSuccess == true) {
+            this.loginService.SetUserData(JSON.stringify(responseJson.Data));
+
+            AsyncStorage.setItem(StorageKeys.IsLoginKey,"true");
+            this.props.navigation.navigate(NavigateKeys.MenuKey);
+        }
+        else {
+            Alert.alert(Constant.ErrorText, responseJson.ExceptionMsg);
+        }
+    }).catch((error) => {
+        console.log(error);
+    });
   }
 }
