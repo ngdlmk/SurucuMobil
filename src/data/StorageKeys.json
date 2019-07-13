@@ -1,3 +1,4 @@
 {
-    "IsLoginKey":"IsLogin"
+    "IsLoginKey":"IsLogin",
+    "UserDetailKey":"UserDetail"
 }

@@ -1,26 +1,58 @@
-//This is an example code for NavigationDrawer//
 import React, { Component } from 'react';
-//import react in our code.
-import { StyleSheet, View, Text } from 'react-native';
-// import all basic components
+import {AsyncStorage,Image,StyleSheet  } from 'react-native';
+import { Container, Header, Content, Card, CardItem, Text, Body } from 'native-base';
  
+var StorageKeys=require('../data/StorageKeys.json');
+
 export default class MainScreen extends Component {
-  //MainScreen Component
+  constructor(props){
+    super(props);
+
+    this.state={
+      FirstName:"",
+      LastName:""
+    }
+  }
+
   render() {
     return (
-      <View style={styles.MainContainer}>
-        <Text style={{ fontSize: 23 }}> Ana Ekran </Text>
-      </View>
+      <Container style={styles.MainContainer}>
+        <Content>
+          <Card>
+            <CardItem header bordered>
+              <Image style={{ width: 150, height: 38 }} source={require('../../assets/ceturlogo.png')} />
+            </CardItem>
+            <CardItem>
+              <Body>
+                <Text>Sayın {this.state.FirstName} {this.state.LastName}</Text>
+                <Text></Text>
+                <Text>Sürücüm Mobil uygulamasına hoşgeldiniz</Text>
+                <Text>Yandaki menuden seçimlerinizi yapabilirsiniz </Text>              
+              </Body>
+            </CardItem>
+          </Card>
+        </Content>
+      </Container>
     );
+  }  
+
+  componentDidMount (){
+    AsyncStorage.getItem(StorageKeys.UserDetailKey)
+    .then( value => {    
+      var parsedUserDetail= JSON.parse(value);
+      this.setState({
+        FirstName:parsedUserDetail["UserDetail"]["FirstName"],
+        LastName:parsedUserDetail["UserDetail"]["LastName"]
+      });
+    })
   }
+
 }
- 
+
 const styles = StyleSheet.create({
   MainContainer: {
     flex: 1,
-    paddingTop: 20,
-    alignItems: 'center',
-    marginTop: 50,
+    marginTop: 150,
     justifyContent: 'center',
   },
 });

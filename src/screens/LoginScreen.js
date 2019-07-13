@@ -114,9 +114,9 @@ export default class LoginScreen extends Component {
         this.setState({ animateLogin: false });
 
         if (responseJson.IsSuccess == true) {
-            this.loginService.SetUserData(JSON.stringify(responseJson.Data));
-
+            AsyncStorage.setItem(StorageKeys.UserDetailKey,JSON.stringify(responseJson.Data));
             AsyncStorage.setItem(StorageKeys.IsLoginKey,"true");
+            
             this.props.navigation.navigate(NavigateKeys.MenuKey);
         }
         else {
