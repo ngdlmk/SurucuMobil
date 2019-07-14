@@ -8,6 +8,7 @@ import {MainScreenStackNavigator,
   RouteScreenStackNavigator,
   WriteCeturScreenStackNavigator,
   SettingScreenStackNavigator,
+  ChangePasswordScreenStackNavigator,
   ExitScreenStackNavigator} 
 from './Navigators'
 
@@ -49,8 +50,14 @@ const MenuScreen = createDrawerNavigator({
     navigationOptions: {
       drawerLabel: menuTitle.SettingScreenTitle,
     },
-  },
+  },  
   Screen7: {
+    screen: ChangePasswordScreenStackNavigator,
+    navigationOptions: {
+      drawerLabel: menuTitle.ChangePasswordScreenTitle,
+    },
+  },
+  Screen8: {
     screen: ExitScreenStackNavigator,
     navigationOptions: {
       drawerLabel: menuTitle.ExitScreenTitle,

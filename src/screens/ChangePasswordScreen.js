@@ -4,12 +4,12 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 // import all basic components
  
-export default class CarScreen extends Component {
+export default class ChangePasswordScreen extends Component {
   //Screen1 Component
   render() {
     return (
       <View style={styles.MainContainer}>
-           <Text>Araba Ekranı</Text>
+        <Text style={{ fontSize: 23 }}> Şifre Değiştirme Sayfası </Text>
       </View>
     );
   }

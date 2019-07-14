@@ -1,58 +1,46 @@
 import React, { Component } from 'react';
-import {AsyncStorage,Image,StyleSheet  } from 'react-native';
-import { Container, Header, Content, Card, CardItem, Text, Body } from 'native-base';
+import {StyleSheet  } from 'react-native';
+import { Container, Content, Button, Text } from 'native-base';
  
-var StorageKeys=require('../data/StorageKeys.json');
+var menuTitle=require('./../data/MenuTitles.json');
+var navigateKeys=require('../data/NavigateKeys.json');
 
 export default class MainScreen extends Component {
-  constructor(props){
-    super(props);
-
-    this.state={
-      FirstName:"",
-      LastName:""
-    }
-  }
-
   render() {
     return (
-      <Container style={styles.MainContainer}>
+      <Container>
         <Content>
-          <Card>
-            <CardItem header bordered>
-              <Image style={{ width: 150, height: 38 }} source={require('../../assets/ceturlogo.png')} />
-            </CardItem>
-            <CardItem>
-              <Body>
-                <Text>Sayın {this.state.FirstName} {this.state.LastName}</Text>
-                <Text></Text>
-                <Text>Sürücüm Mobil uygulamasına hoşgeldiniz</Text>
-                <Text>Yandaki menuden seçimlerinizi yapabilirsiniz </Text>              
-              </Body>
-            </CardItem>
-          </Card>
+            <Button rounded block info style={styles.Button}
+              onPress={()=>this.props.navigation.navigate(navigateKeys.CarKey)}>
+              <Text>{menuTitle.CarScreenTitle}</Text>
+            </Button>
+            <Button rounded block info style={styles.Button}
+              onPress={()=>this.props.navigation.navigate(navigateKeys.DriverKey)}>
+              <Text>{menuTitle.DriverScreenTitle}</Text>
+            </Button>
+            <Button rounded block info style={styles.Button}
+              onPress={()=>this.props.navigation.navigate(navigateKeys.RouteKey)}>
+              <Text>{menuTitle.RouteScreenTitle}</Text>
+            </Button>
+            <Button rounded block info style={styles.Button}
+              onPress={()=>this.props.navigation.navigate(navigateKeys.WriteCeturKey)}>
+              <Text>{menuTitle.WriteCeturScreenTitle}</Text>
+            </Button>
+            <Button rounded block info style={styles.Button}
+              onPress={()=>this.props.navigation.navigate(navigateKeys.SettingKey)}>
+              <Text>{menuTitle.SettingScreenTitle}</Text>
+            </Button>
         </Content>
-      </Container>
+    </Container>
     );
   }  
-
-  componentDidMount (){
-    AsyncStorage.getItem(StorageKeys.UserDetailKey)
-    .then( value => {    
-      var parsedUserDetail= JSON.parse(value);
-      this.setState({
-        FirstName:parsedUserDetail["UserDetail"]["FirstName"],
-        LastName:parsedUserDetail["UserDetail"]["LastName"]
-      });
-    })
-  }
-
 }
 
 const styles = StyleSheet.create({
-  MainContainer: {
-    flex: 1,
-    marginTop: 150,
-    justifyContent: 'center',
+  Button: {
+    marginTop:20,
+    marginLeft:20,
+    marginRight:20,
+    height:70
   },
 });

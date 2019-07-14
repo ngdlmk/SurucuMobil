@@ -8,13 +8,14 @@ import RouteScreen from '../RouteScreen'
 import WriteCeturScreen from '../WriteCeturScreen'
 import SettingScreen from '../SettingScreen'
 import ExitScreen from '../ExitScreen'
+import ChangePasswordScreen from '../ChangePasswordScreen'
 
 var backgroundColor="#37C1CC";
 var headerTintColor="#fff";
 var menuTitle=require('./../../data/MenuTitles.json');
 
 export const MainScreenStackNavigator = createStackNavigator({
-    First: {
+    Main: {
       screen: MainScreen,
       navigationOptions: ({ navigation }) => ({
         title: "",
@@ -28,7 +29,7 @@ export const MainScreenStackNavigator = createStackNavigator({
   });
    
   export const CarScreenStackNavigator = createStackNavigator({
-    Second: {
+    Car: {
       screen: CarScreen,
       navigationOptions: ({ navigation }) => ({
         title: menuTitle.CarScreenTitle,
@@ -42,7 +43,7 @@ export const MainScreenStackNavigator = createStackNavigator({
   });
    
   export const DriverScreenStackNavigator = createStackNavigator({
-    Third: {
+    Driver: {
       screen: DriverScreen,
       navigationOptions: ({ navigation }) => ({
         title: menuTitle.DriverScreenTitle,
@@ -56,7 +57,7 @@ export const MainScreenStackNavigator = createStackNavigator({
   });
 
   export const RouteScreenStackNavigator = createStackNavigator({
-    Fourth: {
+    Route: {
       screen: RouteScreen,
       navigationOptions: ({ navigation }) => ({
         title: menuTitle.RouteScreenTitle,
@@ -70,7 +71,7 @@ export const MainScreenStackNavigator = createStackNavigator({
   });
 
   export const WriteCeturScreenStackNavigator = createStackNavigator({
-    Fifth: {
+    WriteCetur: {
       screen: WriteCeturScreen,
       navigationOptions: ({ navigation }) => ({
         title: menuTitle.WriteCeturScreenTitle,
@@ -84,7 +85,7 @@ export const MainScreenStackNavigator = createStackNavigator({
   });
 
   export const SettingScreenStackNavigator = createStackNavigator({
-    Sixth: {
+    Setting: {
       screen: SettingScreen,
       navigationOptions: ({ navigation }) => ({
         title: menuTitle.SettingScreenTitle,
@@ -97,8 +98,22 @@ export const MainScreenStackNavigator = createStackNavigator({
     },
   });
 
+  export const ChangePasswordScreenStackNavigator = createStackNavigator({
+    ChangePassword: {
+      screen: ChangePasswordScreen,
+      navigationOptions: ({ navigation }) => ({
+        title: menuTitle.ChangePasswordScreenTitle,
+        headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
+        headerStyle: {
+          backgroundColor: backgroundColor,
+        },
+        headerTintColor: '#fff',
+      }),
+    },
+  });
+
   export const ExitScreenStackNavigator = createStackNavigator({
-    Seventh: {
+    Exit: {
       screen: ExitScreen,
       navigationOptions: ({ navigation }) => ({
         title: "",

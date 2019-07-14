@@ -1,5 +1,10 @@
 {
     "LoginKey":"Login",
+    "CarKey":"Car",
+    "DriverKey":"Driver",
+    "RouteKey":"Route",
+    "WriteCeturKey":"WriteCetur",
+    "SettingKey":"Setting",
     "MenuKey":"Menu",
     "ExitKey":"Exit"
 }
