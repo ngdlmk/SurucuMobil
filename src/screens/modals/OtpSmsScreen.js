@@ -31,12 +31,14 @@ export default class OtpSmsScreen extends Component {
   render() {
     return (
       <Container>
-      <Content style={{ paddingLeft: 5, paddingRight: 5,paddingTop:30 }}>          
-      <Spinner
-            visible={this.state.animateLogin}
-            textContent={Constant.LoadingText}
-            textStyle={{color: '#FFF' }}
-            />
+      <Content style={{ paddingLeft: 5, paddingRight: 5,paddingTop:30 }}> 
+      {this.state.animateLogin &&         
+        <Spinner
+                visible={this.state.animateLogin}
+                textContent={Constant.LoadingText}
+                textStyle={{color: '#FFF' }}
+                />
+      }
       <Grid style={{ marginTop: 20 }}>          
               <Row size={40} style={{ marginBottom: 40 }}>
                   <Col size={100} style={{ alignContent: "center", alignItems: "center" }}>
@@ -150,7 +152,7 @@ export default class OtpSmsScreen extends Component {
                 personId:responseJson.Data!=null? responseJson.Data.PersonId:0,
                 personMobileTelephoneId:responseJson.Data!=null?responseJson.Data.PersonMobileTelephoneId:0
             })
-         , 1000); 
+         , 1500); 
     }).catch((error) => {
         console.log(error);
     });
@@ -158,8 +160,6 @@ export default class OtpSmsScreen extends Component {
 
   createPassword(){
     //control
-    //this.setState({ animateLogin: true });
-
     var model=new CreatePasswordMobileModel();
     model.PersonId=this.state.personId;
     model.PersonMobileTelephoneId=this.state.personMobileTelephoneId;
@@ -168,19 +168,13 @@ export default class OtpSmsScreen extends Component {
     model.NewPassword2=this.state.newPassword2;
 
     this.loginService.createPasswordMobile(model).then(responseJson => {
-        // setTimeout(()=>
-        //     this.setState({ 
-        //         animateLogin:false
-        //     })
-        // , 1000); 
-
         if (!responseJson.IsSuccess) {             
             Alert.alert(Constant.ErrorText, responseJson.ExceptionMsg);        
         }
         else{
             Alert.alert(Constant.SuccessText, "Şifreniz oluşturuldu"); 
             this.props.navigation.goBack();
-        }
+        } 
     }).catch((error) => {
         console.log(error);
     });

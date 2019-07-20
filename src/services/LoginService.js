@@ -47,6 +47,18 @@ export default class LoginService {
             return result.json();
         });
     }
+
+    updatePasswordMobile(updatePasswordMobileModel) {
+        return fetch(this.host.ServiceUrl + 'Login/UpdatePasswordMobile', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatePasswordMobileModel),
+        }).then(function (result) {
+            return result.json();
+        });
+    }
 }
 
 

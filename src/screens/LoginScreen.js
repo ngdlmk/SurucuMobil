@@ -36,11 +36,11 @@ export default class LoginScreen extends Component {
     return (
       <Container>
       <Content style={{ paddingLeft: 5, paddingRight: 5 }}>
-          <Spinner
-            visible={this.state.isSpinnerShow}
-            textContent={Constant.LoadingText}
-            textStyle={{color: '#FFF' }}
-            />
+      {this.state.isSpinnerShow &&
+      <Spinner visible={this.state.isSpinnerShow} 
+        textContent={Constant.LoadingText}  
+        textStyle={{color: '#FFF' }} />
+        }
           <Grid style={{ marginTop: 70 }}>
               <Row size={40} style={{ marginBottom: 40 }}>
                   <Col size={100} style={{ alignContent: "center", alignItems: "center" }}>
@@ -119,17 +119,18 @@ export default class LoginScreen extends Component {
         setTimeout(()=>{
             this.setState({ 
                 isSpinnerShow:false
-            });      
-        }, 1000); 
-            if (responseJson.IsSuccess == true) {
-                AsyncStorage.setItem(StorageKeys.UserDetailKey,JSON.stringify(responseJson.Data));
-                AsyncStorage.setItem(StorageKeys.IsLoginKey,"true");
-                
-                this.props.navigation.navigate(NavigateKeys.MenuKey);
-            }
-            else {
-                Alert.alert(Constant.ErrorText, responseJson.ExceptionMsg);
-            }     
+            });     
+        }, 1500);        
+            
+        if (responseJson.IsSuccess ) {
+            AsyncStorage.setItem(StorageKeys.UserDetailKey,JSON.stringify(responseJson.Data));
+            AsyncStorage.setItem(StorageKeys.IsLoginKey,"true");
+            
+            this.props.navigation.navigate(NavigateKeys.MenuKey);
+        }
+        else {
+            Alert.alert(Constant.ErrorText, responseJson.ExceptionMsg);
+        }      
     }).catch((error) => {
         console.log(error);
     });
