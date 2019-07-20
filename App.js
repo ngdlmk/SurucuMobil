@@ -1,8 +1,7 @@
-
 import { createStackNavigator, createAppContainer } from "react-navigation";
-import {LoginScreen,MenuScreen,ExitScreen} from './src/screens'
+import {LoginScreen,MenuScreen,ExitScreen,OtpSmsScreen} from './src/screens'
 
-const AppNavigator = createStackNavigator(
+const AppStack = createStackNavigator(
   {
     Login:LoginScreen,
     Menu: MenuScreen,
@@ -14,4 +13,19 @@ const AppNavigator = createStackNavigator(
   }
 );
 
-export default createAppContainer(AppNavigator);
+const RootStack = createStackNavigator(
+  {
+    Main: {
+      screen: AppStack,
+    },
+    OtpSms: {
+      screen: OtpSmsScreen,
+    },
+  },
+  {
+    mode: 'modal',
+    headerMode: 'none',
+  }
+);
+
+export default createAppContainer(RootStack);

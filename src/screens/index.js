@@ -6,3 +6,4 @@ export { default as SettingScreen } from './SettingScreen';
 export { default as WriteCeturScreen } from './WriteCeturScreen';
 export { default as CarScreen } from './CarScreen';
 export { default as ExitScreen } from './ExitScreen';
+export { default as OtpSmsScreen } from './modals/OtpSmsScreen';

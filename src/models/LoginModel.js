@@ -1,4 +1,4 @@
 export default class LoginModel {
-    UserEmail = "";
-    UserPass = "";
+    MailAddress = "";
+    Password = "";
 }

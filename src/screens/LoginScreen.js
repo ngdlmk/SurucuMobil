@@ -76,14 +76,24 @@ export default class LoginScreen extends Component {
           <Grid tyle={{ paddingLeft: 5, paddingRight: 5, paddingTop: 5 }}>
               <Row size={20} style={{ alignContent: "center", alignItems: "center" }}>
                   <Col size={50} >
-                      <Button block rounded light
+                   <Button block rounded light
                           onPress={this.loginOperation.bind(this)}>
                           <Text>Giriş</Text>
                       </Button>
+                 </Col>
+              </Row>
+          </Grid>
+          <Grid style={{ marginTop: 50 }}>
+              <Row size={20} style={{ alignContent: "center", alignItems: "center" }}>
+                  <Col size={50} >
+                     <Button block transparent 
+                         onPress={() => this.props.navigation.navigate('OtpSms')} >
+                        <Text style={{color:"#B22222"}}>Şifre Oluştur</Text>
+                    </Button>
                   </Col>
               </Row>
           </Grid>
-          <Grid style={{ marginTop: 150 }}>
+          <Grid style={{ marginTop: 70 }}>
               <Row size={100}>
                   <Col size={100} style={{ alignContent: "center", alignItems: "center" }}>
                       <Image style={{ width: 150, height: 38 }} source={require('../../assets/ceturlogo.png')} />
