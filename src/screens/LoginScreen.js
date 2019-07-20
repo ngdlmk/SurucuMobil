@@ -1,9 +1,10 @@
 import React,{Component} from "react";
-import { View, Alert, Image, Text, ActivityIndicator,AsyncStorage } from 'react-native';
+import { Alert, Image, Text, AsyncStorage } from 'react-native';
 import { Container, Header, Content, Item, Input, Icon, Button } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import {LoginService} from '../services'
 import * as Constant from '../data/Constants';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 var NavigateKeys=require('../data/NavigateKeys.json');
 var StorageKeys=require('../data/StorageKeys.json');
@@ -17,7 +18,7 @@ export default class LoginScreen extends Component {
       this.state = {
         userName: "",
         userPassword: "",
-        animateLogin: false
+        isSpinnerShow: false
       };
     }
 
@@ -28,30 +29,24 @@ export default class LoginScreen extends Component {
                       this.props.navigation.navigate(NavigateKeys.MenuKey);
                     }
                   })
+                  
     }
 
   render() {
-    const isLoading = this.state.animateLogin;
     return (
       <Container>
       <Content style={{ paddingLeft: 5, paddingRight: 5 }}>
+          <Spinner
+            visible={this.state.isSpinnerShow}
+            textContent={Constant.LoadingText}
+            textStyle={{color: '#FFF' }}
+            />
           <Grid style={{ marginTop: 70 }}>
               <Row size={40} style={{ marginBottom: 40 }}>
                   <Col size={100} style={{ alignContent: "center", alignItems: "center" }}>
                       <Image source={require('../../assets/bmsLoginLogo.png')} />
                   </Col>
               </Row>
-              <View style={{ justifyContent: 'space-around', }}>
-                  {isLoading && (
-                      <ActivityIndicator
-                          animating={this.state.animateLogin}
-                          style={{ height: 80 }}
-                          color="#0000ff"
-                          size="large"
-                          hidesWhenStopped={true}
-                      />
-                  )}
-              </View>
               <Row size={20} style={{ marginBottom: 5 }}>
                   <Col size={100}>
                       <Item>
@@ -118,22 +113,25 @@ export default class LoginScreen extends Component {
     }
 
     //control
-    this.setState({ animateLogin: true });
-
-    this.loginService.login(this.state.userName, this.state.userPassword).then(responseJson => {
-        this.setState({ animateLogin: false });
-
-        if (responseJson.IsSuccess == true) {
-            AsyncStorage.setItem(StorageKeys.UserDetailKey,JSON.stringify(responseJson.Data));
-            AsyncStorage.setItem(StorageKeys.IsLoginKey,"true");
-            
-            this.props.navigation.navigate(NavigateKeys.MenuKey);
-        }
-        else {
-            Alert.alert(Constant.ErrorText, responseJson.ExceptionMsg);
-        }
+    this.setState({ isSpinnerShow: true });
+ 
+    this.loginService.login(this.state.userName, this.state.userPassword).then(responseJson => {        
+        setTimeout(()=>{
+            this.setState({ 
+                isSpinnerShow:false
+            });      
+        }, 1000); 
+            if (responseJson.IsSuccess == true) {
+                AsyncStorage.setItem(StorageKeys.UserDetailKey,JSON.stringify(responseJson.Data));
+                AsyncStorage.setItem(StorageKeys.IsLoginKey,"true");
+                
+                this.props.navigation.navigate(NavigateKeys.MenuKey);
+            }
+            else {
+                Alert.alert(Constant.ErrorText, responseJson.ExceptionMsg);
+            }     
     }).catch((error) => {
         console.log(error);
     });
-  }
+   }
 }

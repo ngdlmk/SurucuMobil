@@ -5,6 +5,7 @@ import { Col, Row, Grid } from 'react-native-easy-grid';
 import {LoginService} from '../../services'
 import * as Constant from '../../data/Constants'; 
 import {CreatePasswordMobileModel} from '../../models';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 export default class OtpSmsScreen extends Component {
   loginService = new LoginService();
@@ -30,19 +31,13 @@ export default class OtpSmsScreen extends Component {
   render() {
     return (
       <Container>
-      <Content style={{ paddingLeft: 5, paddingRight: 5,paddingTop:30 }}>
+      <Content style={{ paddingLeft: 5, paddingRight: 5,paddingTop:30 }}>          
+      <Spinner
+            visible={this.state.animateLogin}
+            textContent={Constant.LoadingText}
+            textStyle={{color: '#FFF' }}
+            />
       <Grid style={{ marginTop: 20 }}>          
-            <View style={{ justifyContent: 'space-around', }}>
-                  {this.state.animateLogin && (
-                      <ActivityIndicator
-                          animating={this.state.animateLogin}
-                          style={{ height: 80 }}
-                          color="#0000ff"
-                          size="large"
-                          hidesWhenStopped={true}
-                      />
-                  )}
-              </View>
               <Row size={40} style={{ marginBottom: 40 }}>
                   <Col size={100} style={{ alignContent: "center", alignItems: "center" }}>
                       <Image source={require('../../../assets/otp-image.png')} />
@@ -148,13 +143,14 @@ export default class OtpSmsScreen extends Component {
         if (!responseJson.IsSuccess) {             
             Alert.alert(Constant.ErrorText, responseJson.ExceptionMsg);        
         }
-        
-        this.setState({ 
-            animateLogin: false,
-            messageSend:responseJson.IsSuccess,
-            personId:responseJson.Data!==undefined? responseJson.Data.PersonId:0,
-            personMobileTelephoneId:responseJson.Data!==undefined?responseJson.Data.PersonMobileTelephoneId:0
-         });
+        setTimeout(()=>
+            this.setState({ 
+                animateLogin:false,
+                messageSend:responseJson.IsSuccess,
+                personId:responseJson.Data!=null? responseJson.Data.PersonId:0,
+                personMobileTelephoneId:responseJson.Data!=null?responseJson.Data.PersonMobileTelephoneId:0
+            })
+         , 1000); 
     }).catch((error) => {
         console.log(error);
     });
@@ -162,7 +158,7 @@ export default class OtpSmsScreen extends Component {
 
   createPassword(){
     //control
-    this.setState({ animateLogin: true });
+    //this.setState({ animateLogin: true });
 
     var model=new CreatePasswordMobileModel();
     model.PersonId=this.state.personId;
@@ -172,9 +168,11 @@ export default class OtpSmsScreen extends Component {
     model.NewPassword2=this.state.newPassword2;
 
     this.loginService.createPasswordMobile(model).then(responseJson => {
-        this.setState({ 
-            animateLogin: false
-         });
+        // setTimeout(()=>
+        //     this.setState({ 
+        //         animateLogin:false
+        //     })
+        // , 1000); 
 
         if (!responseJson.IsSuccess) {             
             Alert.alert(Constant.ErrorText, responseJson.ExceptionMsg);        
