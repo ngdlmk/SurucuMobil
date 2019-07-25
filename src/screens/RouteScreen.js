@@ -1,20 +1,16 @@
-//This is an example code for NavigationDrawer//
 import React, { Component } from 'react';
-//import react in our code.
 import { StyleSheet, View, Text } from 'react-native';
 import { Container, Header, Content, Item, Input, Icon, Button } from 'native-base';
-// import all basic components
- 
-export default class DriverScreen extends Component {
-  //Screen3 Component
+
+export default class RouteScreen extends Component {
+  constructor(props){
+    super(props);    
+  } 
+
   render() {
     return (
       <View style={styles.MainContainer}>
         <Text style={{ fontSize: 23 }}> Route Screen </Text>
-        <Button block transparent 
-                         onPress={() => this.props.navigation.navigate('RouteModal')} >
-                        <Text style={{color:"#B22222"}}>Route Modala Git</Text>
-                    </Button>
       </View>
     );
   }

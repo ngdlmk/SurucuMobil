@@ -9,6 +9,7 @@ import WriteCeturScreen from '../WriteCeturScreen'
 import SettingScreen from '../SettingScreen'
 import ExitScreen from '../ExitScreen'
 import ChangePasswordScreen from '../ChangePasswordScreen'
+import {  Button, Text } from 'native-base';
 
 var backgroundColor="#37C1CC";
 var headerTintColor="#fff";
@@ -66,8 +67,13 @@ export const MainScreenStackNavigator = createStackNavigator({
           backgroundColor: backgroundColor,
         },
         headerTintColor: '#fff',
+        headerRight: (
+          <Button style={{backgroundColor:backgroundColor}} onPress={() => navigation.navigate('RouteModal')} >
+            <Text>Filtre</Text>
+          </Button>
+        ),
       }),
-    },
+    }
   });
 
   export const WriteCeturScreenStackNavigator = createStackNavigator({

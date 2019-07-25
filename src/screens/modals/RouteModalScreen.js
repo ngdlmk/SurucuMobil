@@ -1,20 +1,27 @@
-//This is an example code for NavigationDrawer//
 import React, { Component } from 'react';
-//import react in our code.
-import { StyleSheet, View, Text } from 'react-native';
-import {  Button } from 'native-base';
-// import all basic components
+import { StyleSheet, View, Picker } from 'react-native';
  
 export default class RouteModalScreen extends Component {
-  //Screen3 Component
+  constructor(props){
+    super(props);
+
+    this.state = {
+      language: ""
+    };
+  }
+
   render() {
     return (
       <View style={styles.MainContainer}>
-        <Text style={{ fontSize: 23 }}> Route Modal Screen </Text>
-        <Button block transparent 
-                         onPress={() => this.props.navigation.goBack()} >
-                        <Text style={{color:"#B22222"}}>İptal</Text>
-                    </Button>
+        <Picker
+          selectedValue={this.state.language}
+          style={{height: 50, width: 100}}
+          onValueChange={(itemValue, itemIndex) =>
+            this.setState({language: itemValue})
+          }>
+          <Picker.Item label="Java" value="java" />
+          <Picker.Item label="JavaScript" value="js" />
+        </Picker>
       </View>
     );
   }
