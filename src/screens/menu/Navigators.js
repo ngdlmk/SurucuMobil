@@ -69,7 +69,7 @@ export const MainScreenStackNavigator = createStackNavigator({
         headerTintColor: '#fff',
         headerRight: (
           <Button style={{backgroundColor:backgroundColor}} onPress={() => navigation.navigate('RouteModal')} >
-            <Text>Filtre</Text>
+            <Text>FILTRE</Text>
           </Button>
         ),
       }),
