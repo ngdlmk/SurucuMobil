@@ -17,33 +17,35 @@ export default class RouteModalScreen extends Component {
     this.state = {
       animateLogin: false,
       cars:[],
-      personId:0
+      personId:0,
+      selectedCarId:0,
+      selectedProjectId:0,
+      selectedRouteId:0,
+      selectedVoyageId:0,
+      typography: 'Headline',
     };
 
     this.getCars=this.getCars.bind(this);
     this.getPersonId=this.getPersonId.bind(this);
-    this.carChangeEvent=this.carChangeEvent.bind(this);
+    this.filterOperation=this.filterOperation.bind(this);
+    
+    this.onCarChangeEvent = this.onCarChangeEvent.bind(this);
+  }
+
+  shouldComponentUpdate( nextProps, nextState ){
+    let isStateSame=(nextState.selectedCarId === this.state.selectedCarId && nextState.selectedProjectId === this.state.selectedProjectId &&
+                     nextState.selectedRouteId === this.state.selectedRouteId && nextState.selectedVoyageId === this.state.selectedVoyageId);
+
+    return !isStateSame;
   }
 
   componentWillMount(){
     this.getPersonId();
     this.getCars();
-}
+  }
 
   render() {
-    let data = [{
-      value: 'Banana',
-    }, {
-      value: 'Mango',
-    }, {
-      value: 'Pear',
-    }, {
-      value: '1',
-    }, {
-      value: '2',
-    }, {
-      value: '3',
-    }];
+    let data = [];
 
     return (
       <Container>
@@ -55,7 +57,7 @@ export default class RouteModalScreen extends Component {
                       textStyle={{color: '#FFF' }}
                       />
             }
-          <Dropdown label='Araçlar'data={this.state.cars} onChangeText={this.carChangeEvent()}/>
+          <Dropdown label='Araçlar' data={this.state.cars} onChangeText={this.onCarChangeEvent}/>
           <Dropdown label='Projeler'data={data} />
           <Dropdown label='Güzergahlar'data={data} />
           <Dropdown label='Seferler'data={data} />
@@ -85,10 +87,11 @@ export default class RouteModalScreen extends Component {
     );
   }
 
-  filterOperation(){
-
+  //button events
+  filterOperation(){    
   }
 
+  //operational methods
   getPersonId(){
     AsyncStorage.getItem(StorageKeys.UserDetailKey)
     .then( value => {    
@@ -99,7 +102,7 @@ export default class RouteModalScreen extends Component {
     })
   }
 
-  //get items
+  //get items from api
   getCars(){
     var model=new GetCarsModel();
     model.PersonId=603;//this.state.personId;
@@ -120,7 +123,13 @@ export default class RouteModalScreen extends Component {
   }
 
   //dropdown change event
-  carChangeEvent(key, value){
-    alert(key);
+  onCarChangeEvent(selectedValue) {
+    this.state.cars.map(car=>{
+      if(car.value==selectedValue && car.key!=this.state.selectedCarId){        
+        this.setState({
+          selectedCarId:car.key
+        })
+      }
+    })
   }
 }
