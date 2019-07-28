@@ -1,4 +1,6 @@
 {
     "IsLoginKey":"IsLogin",
-    "UserDetailKey":"UserDetail"
+    "UserDetailKey":"UserDetail",
+    "SelectedRouteId":"SelectedRouteId",
+    "SelectedVoyageId":"SelectedVoyageId"
 }

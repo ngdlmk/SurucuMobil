@@ -14,6 +14,66 @@ export default class MapService {
             return result.json();
         });
     }
+
+    getProjects(request) {
+        return fetch(this.host.ServiceUrl + 'Map/GetProjects', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(request),
+        }).then(function (result) {
+            return result.json();
+        });
+    }
+
+    getRoutes(request) {
+        return fetch(this.host.ServiceUrl + 'Map/GetRoutes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(request),
+        }).then(function (result) {
+            return result.json();
+        });
+    }
+
+    getVoyages(request) {
+        return fetch(this.host.ServiceUrl + 'Map/GetVoyages', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(request),
+        }).then(function (result) {
+            return result.json();
+        });
+    }
+
+    getStations(request) {
+        return fetch(this.host.ServiceUrl + 'Map/GetStations', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(request),
+        }).then(function (result) {
+            return result.json();
+        });
+    }
+
+    getDirections(request) {
+        return fetch(this.host.ServiceUrl + 'Map/GetDirections', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(request),
+        }).then(function (result) {
+            return result.json();
+        });
+    }
 }
 
 

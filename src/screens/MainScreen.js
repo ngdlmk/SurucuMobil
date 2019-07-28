@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
-import {StyleSheet  } from 'react-native';
+import {StyleSheet,AsyncStorage  } from 'react-native';
 import { Container, Content, Button, Text } from 'native-base';
  
 var menuTitle=require('./../data/MenuTitles.json');
 var navigateKeys=require('../data/NavigateKeys.json');
+var StorageKeys=require('../data/StorageKeys.json');
 
 export default class MainScreen extends Component {
+
+
+  componentWillMount(){
+    this.clearStorage()
+  }
   render() {
     return (
       <Container>
@@ -33,7 +39,12 @@ export default class MainScreen extends Component {
         </Content>
     </Container>
     );
-  }  
+  }
+  
+  clearStorage=()=>{
+    AsyncStorage.setItem(StorageKeys.SelectedRouteId,"0");
+    AsyncStorage.setItem(StorageKeys.SelectedVoyageId,"0");
+  }
 }
 
 const styles = StyleSheet.create({

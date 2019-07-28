@@ -61,7 +61,7 @@ export const MainScreenStackNavigator = createStackNavigator({
     Route: {
       screen: RouteNavigator,
       navigationOptions: ({ navigation }) => ({
-        title: menuTitle.RouteScreenTitle,
+        title:  menuTitle.RouteScreenTitle, 
         headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
         headerStyle: {
           backgroundColor: backgroundColor,
