@@ -4,6 +4,7 @@ import { Container, Header, Content, Item, Input, Icon, Button } from 'native-ba
 import {AsyncStorage} from 'react-native';
 import {GetStationsModel,GetDirectionsModel} from '../models';
 import MapService from '../services/MapService';
+import getDirections from 'react-native-google-maps-directions'
 
 var StorageKeys=require('../data/StorageKeys.json');
 
@@ -15,17 +16,23 @@ export default class RouteScreen extends Component {
     
     this.state={
       stations:[],
-      directions:[]
+      direction:{}
     }
-  }
+  }  
   
   render() {
     return (
-      <View style={styles.MainContainer}>{
-      }
-        <Text style={{ fontSize: 23 }}> Route Screen </Text>
+      <View style={styles.MainContainer}>
+             <Button rounded block info 
+              onPress={this.handleGetDirections}>
+              <Text>Get Directions</Text>
+            </Button>
       </View>
     );
+  }
+
+  componentWillMount(){
+    this.getDirections(5);
   }
 
   componentDidMount() {
@@ -47,11 +54,12 @@ export default class RouteScreen extends Component {
 
         console.warn("seçilen yolId:"+selectedVoyageId);
 
-        this.getStations(selectedVoyageId);
         this.getDirections(selectedVoyageId);
+        this.getStations(selectedVoyageId);
     })
   }
-  //get items from api
+
+   //get items from api
     getStations=(voyageId)=>{
       var model=new GetStationsModel();
       model.VoyageId=voyageId;
@@ -82,16 +90,57 @@ export default class RouteScreen extends Component {
           if (!responseJson.IsSuccess) {             
               return;       
           }
-          responseJson.Data.Directions.map(direction=>{
-              this.state.directions.push({
-                directionJsonFormat:direction.DirectionJsonFormat,
-                directionId:direction.DirectionId
-              })
+          
+          this.setState({
+            direction:responseJson.Data.Direction
           });
-          //console.warn(this.state.directions);
+          console.warn("ok")
       }).catch((error) => {
           console.log(error);
       });
+    }
+
+    //google map operation
+    handleGetDirections = () => {
+      const {direction}=this.state;  
+      let source =JSON.parse(direction.Source);
+      let destination =JSON.parse(direction.Destination);
+      let waypointList =JSON.parse(direction.Waypoints);      
+      let waypoints=[];
+
+      waypointList.map(waypoint=>{
+        if(waypoint.location.location!=null){
+          let lat=parseFloat(waypoint.location.location.lat);
+          waypoints.push(   {
+            latitude: lat,
+            longitude: 28.912081400000034
+          });
+        }
+      });
+      
+      const data = {
+         source: {
+          latitude: source.location.lat,
+          longitude: source.location.lng
+        },
+        destination: {
+          latitude: destination.location.lat,
+          longitude: destination.location.lng
+        },
+        params: [
+          {
+            key: "travelmode",
+            value: "driving" 
+          },
+          {
+            key: "dir_action",
+            value: "navigate" 
+          }
+        ],
+        waypoints: waypoints
+      }
+
+      getDirections(data)
     }
  }
  
