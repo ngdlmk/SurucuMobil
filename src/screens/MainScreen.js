@@ -42,7 +42,6 @@ export default class MainScreen extends Component {
   }
   
   clearStorage=()=>{
-    AsyncStorage.setItem(StorageKeys.SelectedRouteId,"0");
     AsyncStorage.setItem(StorageKeys.SelectedVoyageId,"0");
   }
 }

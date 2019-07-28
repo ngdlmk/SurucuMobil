@@ -40,23 +40,20 @@ export default class RouteScreen extends Component {
 
   //operation methods
   getStationAndDirections=()=>{
-    AsyncStorage.multiGet([StorageKeys.SelectedRouteId, StorageKeys.SelectedVoyageId]).then(response => {
-        let selectedRouteId=response[0][1];
-        let selectedVoyageId=response[1][1];
-        if(selectedRouteId==0 || selectedVoyageId==0)
+    AsyncStorage.multiGet([ StorageKeys.SelectedVoyageId]).then(response => {
+        let selectedVoyageId=response[0][1];
+        if(selectedVoyageId==0)
           return;
 
-        //console.warn("seçilen seferId:"+selectedRouteId);
-        //console.warn("seçilen yolId:"+selectedVoyageId);
+        console.warn("seçilen yolId:"+selectedVoyageId);
 
-        this.getStations(selectedRouteId,selectedVoyageId);
-        this.getDirections(selectedRouteId,selectedVoyageId);
+        this.getStations(selectedVoyageId);
+        this.getDirections(selectedVoyageId);
     })
   }
   //get items from api
-    getStations=(routeId,voyageId)=>{
+    getStations=(voyageId)=>{
       var model=new GetStationsModel();
-      model.RouteId=routeId;
       model.VoyageId=voyageId;
 
       this.mapService.getStations(model).then(responseJson => {
@@ -77,9 +74,8 @@ export default class RouteScreen extends Component {
       });
     }
 
-    getDirections=(routeId,voyageId)=>{
+    getDirections=(voyageId)=>{
       var model=new GetDirectionsModel();
-      model.RouteId=routeId;
       model.VoyageId=voyageId;
 
       this.mapService.getDirections(model).then(responseJson => {

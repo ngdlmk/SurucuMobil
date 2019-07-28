@@ -3,7 +3,8 @@ import { Container,  Content,  Grid, Row, Col, Button, Text } from 'native-base'
 import { Dropdown } from 'react-native-material-dropdown';
 import {GetCarsModel,GetProjectsModel,GetRoutesModel,GetVoyagesModel} from '../../models';
 import MapService from '../../services/MapService';
-import {AsyncStorage} from 'react-native';
+import {AsyncStorage,Alert} from 'react-native';
+import * as Constant from '../../data/Constants';
 
 var StorageKeys=require('../../data/StorageKeys.json');
 
@@ -90,7 +91,24 @@ export default class RouteModalScreen extends Component {
   }
 
   //button events
-  filterOperation(){    
+  filterOperation(){       
+    if(this.state.selectedCarId==0){
+      Alert.alert(Constant.ErrorText,"Araç seçmelisiniz")
+      return;
+    }     
+    if(this.state.selectedProjectId==0){
+      Alert.alert(Constant.ErrorText,"Proje seçmelisiniz")
+      return;
+    }   
+    if(this.state.selectedRouteId==0){
+      Alert.alert(Constant.ErrorText,"Güzergah seçmelisiniz")
+      return;
+    }   
+    if(this.state.selectedVoyageId==0){
+      Alert.alert(Constant.ErrorText,"Sefer seçmelisiniz")
+      return;
+    } 
+
     this.saveLocalStorage(true);
   }
 
@@ -99,12 +117,9 @@ export default class RouteModalScreen extends Component {
   }
 
   saveLocalStorage(isPressFilter){
-    let routeId=isPressFilter?this.state.selectedRouteId:0;
     let voyageId=isPressFilter?this.state.selectedVoyageId:0;
-    AsyncStorage.setItem(StorageKeys.SelectedRouteId,routeId.toString());
     AsyncStorage.setItem(StorageKeys.SelectedVoyageId,voyageId.toString());
 
-    this.props.navigation.setParams({param: "Updated value"})
     this.props.navigation.goBack();
   }
 
@@ -229,7 +244,7 @@ export default class RouteModalScreen extends Component {
         responseJson.Data.Voyages.map(voyage=>{
             this.state.voyages.push({
               key:voyage.VoyageId,
-              value:voyage.StartTime
+              value:voyage.VoyageDescription
             })
         });
     }).catch((error) => {
