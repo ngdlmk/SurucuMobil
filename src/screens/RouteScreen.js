@@ -32,7 +32,7 @@ export default class RouteScreen extends Component {
   }
 
   componentWillMount(){
-    this.getDirections(5);
+    // this.getDirections(5);
   }
 
   componentDidMount() {
@@ -52,7 +52,7 @@ export default class RouteScreen extends Component {
         if(selectedVoyageId==0)
           return;
 
-        console.warn("seçilen yolId:"+selectedVoyageId);
+        //console.warn("seçilen yolId:"+selectedVoyageId);
 
         this.getDirections(selectedVoyageId);
         this.getStations(selectedVoyageId);
@@ -76,7 +76,6 @@ export default class RouteScreen extends Component {
                 longtitude:station.Longtitude
               })
           });
-          //console.warn(this.state.stations);
       }).catch((error) => {
           console.log(error);
       });
@@ -94,7 +93,6 @@ export default class RouteScreen extends Component {
           this.setState({
             direction:responseJson.Data.Direction
           });
-          console.warn("ok")
       }).catch((error) => {
           console.log(error);
       });
@@ -105,19 +103,8 @@ export default class RouteScreen extends Component {
       const {direction}=this.state;  
       let source =JSON.parse(direction.Source);
       let destination =JSON.parse(direction.Destination);
-      let waypointList =JSON.parse(direction.Waypoints);      
-      let waypoints=[];
+      let waypointList =JSON.parse(direction.Waypoints)
 
-      waypointList.map(waypoint=>{
-        if(waypoint.location.location!=null){
-          let lat=parseFloat(waypoint.location.location.lat);
-          waypoints.push(   {
-            latitude: lat,
-            longitude: 28.912081400000034
-          });
-        }
-      });
-      
       const data = {
          source: {
           latitude: source.location.lat,
@@ -137,7 +124,7 @@ export default class RouteScreen extends Component {
             value: "navigate" 
           }
         ],
-        waypoints: waypoints
+        waypoints: waypointList
       }
 
       getDirections(data)
