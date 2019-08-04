@@ -55,8 +55,6 @@ export default class RouteModalScreen extends Component {
   }
 
   render() {
-    let data = [];
-
     return (
       <Container>
         <Content style={{ paddingLeft: 5, paddingRight: 5,paddingTop:30 }}> 
