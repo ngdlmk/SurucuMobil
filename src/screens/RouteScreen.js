@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text,Alert } from 'react-native';
-import { Button } from 'native-base';
-import {AsyncStorage} from 'react-native';
-import {GetStationsModel,GetDirectionsModel} from '../models';
+import {AsyncStorage,WebView} from 'react-native';
+import {GetDirectionsModel} from '../models';
 import MapService from '../services/MapService';
-import getDirections from 'react-native-google-maps-directions'
-import MapView, { Polyline, Marker } from 'react-native-maps';
-import * as Constant from '../data/Constants';
 
 var StorageKeys=require('../data/StorageKeys.json');
 
@@ -20,46 +15,14 @@ export default class RouteScreen extends Component {
     this.state={
       stations:[],
       direction:{},
-      waypoints:[],
-      selectedVoyageId:0
+      webViewSource:"https://www.google.com/maps/"
     }
   }  
 
   //compoenent life cycle
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <MapView style={{ flex: 9 }}
-            ref = {(ref)=>this.mapView=ref}
-            initialRegion={
-              {
-                latitude:  41.0441,
-                longitude: 29.0017,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
-              }
-            }
-            zoomEnabled={true}
-          >
-            <Polyline
-              coordinates={this.state.waypoints}
-              strokeWidth={2}
-              strokeColor="red"/>
-            {this.state.stations.map((station,index) => (
-                <Marker 
-                  key={index}
-                  coordinate={station.coordinate}
-                  title={station.title}
-                  description={station.description}
-                />
-              ))}
-        </MapView>
-        <View style={{ paddingTop:20, flex: 1 }}>
-          <Button rounded block info  onPress={this.openGoogleMapApplication}>
-               <Text>Google Map i Aç</Text>
-          </Button> 
-        </View>
-      </View>
+       <WebView source={{uri: this.state.webViewSource}} />
     );
   }
 
@@ -84,31 +47,10 @@ export default class RouteScreen extends Component {
           return;
 
         this.getDirections(selectedVoyageId);
-        this.getStations(selectedVoyageId);
-
-        this.setState({
-          selectedVoyageId:selectedVoyageId
-        });
     })
   }
 
   //get items from api
-  getStations=(voyageId)=>{
-    var model=new GetStationsModel();
-    model.VoyageId=voyageId;
-
-    this.mapService.getStations(model).then(responseJson => {
-        if (!responseJson.IsSuccess) {             
-            return;       
-        }
-        this.setState({
-          stations:responseJson.Data.Stations
-        });
-    }).catch((error) => {
-        console.log(error);
-    });
-  }
-
   getDirections=(voyageId)=>{
     var model=new GetDirectionsModel();
     model.VoyageId=voyageId;
@@ -116,62 +58,32 @@ export default class RouteScreen extends Component {
     this.mapService.getDirections(model).then(responseJson => {
         if (!responseJson.IsSuccess) {             
             return;       
-        }
-  
-        let latitude=(JSON.parse(responseJson.Data.Direction.Source).location.lat+JSON.parse(responseJson.Data.Direction.Destination).location.lat)/2;
-        let longitude=(JSON.parse(responseJson.Data.Direction.Source).location.lng+JSON.parse(responseJson.Data.Direction.Destination).location.lng)/2;
-        let newRegion = {
-          latitude: latitude,
-          longitude: longitude,
-          latitudeDelta: 0.2,
-          longitudeDelta: 0.2,
-        };
-
-        this.mapView.animateToRegion(newRegion, 2000);
-
-        this.setState({
-          direction:responseJson.Data.Direction,
-          waypoints:JSON.parse(responseJson.Data.Direction.Waypoints)
-        });
+        }      
+        this.openGoogleMapApplication(responseJson.Data.Direction);
     }).catch((error) => {
         console.log(error);
     });
   }
 
   //open google map application
-  openGoogleMapApplication = () => {
-    if(this.state.selectedVoyageId==0){
-      Alert.alert(Constant.ErrorText,"Rota seçmelisiniz")
-      return;
-    }
-    const {direction}=this.state;  
+  openGoogleMapApplication = (direction) => {
     let source =JSON.parse(direction.Source);
     let destination =JSON.parse(direction.Destination);
-    let waypointList =JSON.parse(direction.Waypoints)
+    let waypointList =JSON.parse(direction.Waypoints);  
 
-    const data = {
-        source: {
-        latitude: source.location.lat,
-        longitude: source.location.lng
-      },
-      destination: {
-        latitude: destination.location.lat,
-        longitude: destination.location.lng
-      },
-      params: [
-        {
-          key: "travelmode",
-          value: "driving" 
-        },
-        {
-          key: "dir_action",
-          value: "navigate" 
-        }
-      ],
-      waypoints: waypointList
+    var webViewSource = `https://www.google.com/maps/dir/?api=1&travelmode=driving&dir_action=navigate&destination=${destination.location.lat},${destination.location.lng}&origin=${source.location.lat},${source.location.lng}`
+
+    if (waypointList.length !== 0) {
+      const params = waypointList
+        .map(value => `${value.latitude},${value.longitude}`)
+        .join('|')
+    
+        webViewSource=webViewSource+`&waypoints=${params}`
     }
-
-    getDirections(data)
+  
+    this.setState({
+      webViewSource:webViewSource
+    });
   }
 
 

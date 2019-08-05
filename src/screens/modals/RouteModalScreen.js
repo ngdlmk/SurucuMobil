@@ -39,6 +39,7 @@ export default class RouteModalScreen extends Component {
     this.onVoyageChangeEvent = this.onVoyageChangeEvent.bind(this);
   }
 
+  //component lifecycle
   shouldComponentUpdate( nextProps, nextState ){
     let isStateSame=(nextState.selectedCarId === this.state.selectedCarId && nextState.selectedProjectId === this.state.selectedProjectId &&
                      nextState.selectedRouteId === this.state.selectedRouteId && nextState.selectedVoyageId === this.state.selectedVoyageId);
@@ -52,6 +53,36 @@ export default class RouteModalScreen extends Component {
       var parsedUserDetail= JSON.parse(value);
       this.getCars(parsedUserDetail["UserDetail"]["PersonId"]);
     })
+  }
+
+  componentDidMount(){
+    AsyncStorage.getAllKeys((err, keys) => {
+      AsyncStorage.multiGet(keys, (err, stores) => {
+        let carId="0",projectId="0",routeId="0",voyageId="0";
+
+        stores.map((result, i, store) => {
+          let key = store[i][0];
+          let value = store[i][1];
+
+          if(key==StorageKeys.SelectedCarId)
+            carId=value;
+          else if(key==StorageKeys.SelectedProjectId)
+            projectId=value;
+          else if(key==StorageKeys.SelectedRouteId)
+            routeId=value;
+          else if(key==StorageKeys.SelectedVoyageId)
+            voyageId=value;
+        });
+
+        this.setState({
+          selectedCarId:carId,
+          selectedProjectId:projectId,
+          selectedRouteId:routeId,
+          selectedVoyageId:voyageId
+        });
+
+      });
+    });
   }
 
   render() {
@@ -114,9 +145,17 @@ export default class RouteModalScreen extends Component {
     this.saveLocalStorage(false);
   }
 
+  //operation
   saveLocalStorage(isPressFilter){
+    let carId=isPressFilter?this.state.selectedCarId:0;
+    let projectId=isPressFilter?this.state.selectedProjectId:0;
+    let routeId=isPressFilter?this.state.selectedRouteId:0;
     let voyageId=isPressFilter?this.state.selectedVoyageId:0;
-    AsyncStorage.setItem(StorageKeys.SelectedVoyageId,voyageId.toString());
+
+    AsyncStorage.multiSet([[StorageKeys.SelectedCarId,carId.toString()],
+                         [StorageKeys.SelectedProjectId,projectId.toString()],
+                         [StorageKeys.SelectedRouteId,routeId.toString()],
+                         [StorageKeys.SelectedVoyageId,voyageId.toString()]]);
 
     this.props.navigation.goBack();
   }

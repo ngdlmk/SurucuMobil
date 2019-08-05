@@ -16,7 +16,7 @@ export default class LoginScreen extends Component {
       super(props);
 
       this.state = {
-        userName: "",
+        gsmNumber: "",
         userPassword: "",
         isSpinnerShow: false
       };
@@ -51,9 +51,9 @@ export default class LoginScreen extends Component {
                   <Col size={100}>
                       <Item>
                           <Icon style={{ color: '#E9E5E4', padding: 0 }} name="ios-document"></Icon>
-                          <Input value={this.state.userName} keyboardType="email-address"
-                              onChangeText={(value) => this.setState({ userName: value })}
-                              placeholder='Email' />
+                          <Input value={this.state.gsmNumber} keyboardType="numeric"
+                              onChangeText={(value) => this.setState({ gsmNumber: value })}
+                              placeholder='Gsm Numarası' />
                       </Item>
                   </Col>
               </Row>
@@ -103,8 +103,8 @@ export default class LoginScreen extends Component {
   //methods
   loginOperation(){
     //validation
-    if(this.state.userName===""){
-        Alert.alert(Constant.ErrorText,"Email adresinizi giriniz")
+    if(this.state.gsmNumber===""){
+        Alert.alert(Constant.ErrorText,"Telefon numaranızı giriniz")
         return;
     }
     if(this.state.userPassword===""){
@@ -115,7 +115,7 @@ export default class LoginScreen extends Component {
     //control
     this.setState({ isSpinnerShow: true });
  
-    this.loginService.login(this.state.userName, this.state.userPassword).then(responseJson => {        
+    this.loginService.login(this.state.gsmNumber, this.state.userPassword).then(responseJson => {        
         setTimeout(()=>{
             this.setState({ 
                 isSpinnerShow:false

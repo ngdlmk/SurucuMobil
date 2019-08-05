@@ -1,6 +1,8 @@
 {
     "IsLoginKey":"IsLogin",
     "UserDetailKey":"UserDetail",
+    "SelectedCarId":"SelectedCarId",
+    "SelectedProjectId":"SelectedProjectId",
     "SelectedRouteId":"SelectedRouteId",
     "SelectedVoyageId":"SelectedVoyageId"
 }

@@ -4,9 +4,9 @@ import {LoginModel,OtpSmsModel} from '../models';
 export default class LoginService {
     host = new Host();
 
-    login(userName, password) {
+    login(gsmNumber, password) {
         let loginModel = new LoginModel();
-        loginModel.MailAddress = userName;
+        loginModel.GsmNumber = gsmNumber;
         loginModel.Password = password;
 
         return fetch(this.host.ServiceUrl + 'Login/LoginUserMobile', {

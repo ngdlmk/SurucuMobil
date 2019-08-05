@@ -15,7 +15,6 @@ export default class OtpSmsScreen extends Component {
 
     this.state = {
       personId:0,
-      personMobileTelephoneId:0,
       gsmNumber: "",
       smsText:"",
       newPassword1:"",
@@ -150,7 +149,6 @@ export default class OtpSmsScreen extends Component {
                 animateLogin:false,
                 messageSend:responseJson.IsSuccess,
                 personId:responseJson.Data!=null? responseJson.Data.PersonId:0,
-                personMobileTelephoneId:responseJson.Data!=null?responseJson.Data.PersonMobileTelephoneId:0
             })
          , 1500); 
     }).catch((error) => {
@@ -162,7 +160,6 @@ export default class OtpSmsScreen extends Component {
     //control
     var model=new CreatePasswordMobileModel();
     model.PersonId=this.state.personId;
-    model.PersonMobileTelephoneId=this.state.personMobileTelephoneId;
     model.SmsText=this.state.smsText;
     model.NewPassword1=this.state.newPassword1;
     model.NewPassword2=this.state.newPassword2;
