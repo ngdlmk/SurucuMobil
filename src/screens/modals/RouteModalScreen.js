@@ -75,9 +75,6 @@ export default class RouteModalScreen extends Component {
         });
 
         this.setState({
-          selectedCarId:carId,
-          selectedProjectId:projectId,
-          selectedRouteId:routeId,
           selectedVoyageId:voyageId
         });
 

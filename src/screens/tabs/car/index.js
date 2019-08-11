@@ -1,0 +1,1 @@
+export { default as CarInformationScreen } from './CarInformationScreen';
