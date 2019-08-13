@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Image } from 'react-native';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { Container,  Content, Text, Button, Icon,Header,Tabs,Tab,TabHeading} from 'native-base';
-import {CarInformationScreen,CarImageScreen} from './tabs/car'
+import {CarInformationScreen,CarImageScreen, LicenseImageScreen} from './tabs/car'
 import { Dropdown } from 'react-native-material-dropdown';
 import {MapService,PuantajService} from '../services';
 import {GetCarsModel,GetAracDetailsByAracId} from '../models';
@@ -19,6 +19,7 @@ export default class CarScreen extends Component {
     super(props);
 
     this.state = {
+      selectedTab:-1,
       cars:[],      
       selectedCarId:0,   
       tokenRequestModel: new TokenRequestModel(),   
@@ -44,10 +45,13 @@ export default class CarScreen extends Component {
       },
       carInsuranceInfo:{},
       carImages:[],
-      selectedTab:-1
+      carLicenseResponse:{},
+      licenseImages:[]
     };
 
     this.getCars=this.getCars.bind(this);
+    this.getCarImages=this.getCarImages.bind(this);
+    this.getCarLicense=this.getCarLicense.bind(this);
     this.onCarChangeEvent = this.onCarChangeEvent.bind(this);
   }
 
@@ -73,9 +77,14 @@ export default class CarScreen extends Component {
               <CarInformationScreen carDetail={this.state.carDetail}/>
             </Tab>
             <Tab heading={<TabHeading><Icon name="bus" /></TabHeading>}>
-              <CarImageScreen carInsuranceInfo={this.state.carInsuranceInfo} carImages={this.state.carImages}/>
+              <CarImageScreen carInsuranceInfo={this.state.carInsuranceInfo} carImages={this.state.carImages} 
+                              reloadCarImages={this.getCarImages} token={this.state.tokenRequestModel.Token} 
+                              selectedCarId={this.state.selectedCarId}/>
             </Tab>
-            <Tab heading={<TabHeading><Icon name="ios-filing" /></TabHeading>}>
+            <Tab heading={<TabHeading><Icon name="ios-filing" /></TabHeading>}>              
+              <LicenseImageScreen licenseImages={this.state.licenseImages} carLicenseResponse={this.state.carLicenseResponse}
+                              reloadLicenseImages={this.getCarLicense} token={this.state.tokenRequestModel.Token} 
+                              selectedCarId={this.state.selectedCarId}/>
             </Tab>
             <Tab heading={<TabHeading><Icon name="md-git-compare" /></TabHeading>}>
             </Tab>
@@ -123,6 +132,7 @@ export default class CarScreen extends Component {
         });
 
         this.getCarImages(carId);
+        this.getCarLicense(carId);
     }).catch((error) => {
         console.error(error);
     });
@@ -139,10 +149,11 @@ export default class CarScreen extends Component {
         if (responseJson.Data) {
             this.setState({
                 carInsuranceInfo: responseJson.Data.insurance,
+                selectedTab:1
             });
             if (responseJson.Data.imageList.length > 0) {
                 this.setState({
-                  carImages: responseJson.Data.imageList,
+                  carImages: responseJson.Data.imageList
                 });
             }
         }           
@@ -151,11 +162,38 @@ export default class CarScreen extends Component {
     });
   }
 
+  getCarLicense(carId) {
+    var request = new GetAracDetailsByAracId();
+    request.Token = this.state.tokenRequestModel.Token;
+    request.AracId = carId;
+
+    this.puantajService.getAracRuhsatByAracId(request).then(responseJson => {
+        if (responseJson.Data) {
+            this.setState({
+                carLicenseResponse: responseJson.Data.ruhsat,
+                selectedTab:2
+            });
+            if (responseJson.Data.imageList.length > 0) {
+                this.setState({
+                    licenseImages: responseJson.Data.imageList
+                });
+            }
+        }
+
+    }).catch((error) => {
+        console.error(error);
+    });
+}
+
   //dropdown change event
   onCarChangeEvent(selectedValue) {
     this.state.cars.map(car=>{
       if(car.value==selectedValue && car.key!=this.state.selectedCarId){  
         this.getCarDetails(car.key);
+
+        this.setState({
+          selectedCarId:car.key
+        });
       }
     })
   }  

@@ -9,5 +9,6 @@ export { default as GetVoyagesModel } from './GetVoyagesModel';
 export { default as GetStationsModel } from './GetStationsModel';
 export { default as GetDirectionsModel } from './GetDirectionsModel';
 export { default as GetAracDetailsByAracId } from './GetAracDetailsByAracId';
+export { default as AddWehicleImageRequestModel } from './AddWehicleImageRequestModel';
 
 

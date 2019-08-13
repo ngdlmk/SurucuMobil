@@ -84,7 +84,7 @@ export default class PuantajService {
         formData.append('plaka', request.plaka);
         formData.append('ID', request.ID);
         formData.append('isDateRequired', request.isDateRequired);
-        console.log("formData",formData);
+
         return fetch(this.host.ServiceUrl + 'Puntaj/AddWehicleImage', {
             method: 'POST',
             headers: {

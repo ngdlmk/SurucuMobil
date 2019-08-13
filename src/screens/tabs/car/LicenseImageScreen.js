@@ -8,14 +8,14 @@ import {PuantajService} from '../../../services';
 import {AddWehicleImageRequestModel} from '../../../../src/models';
 import {Alert} from 'react-native';
 
-export default class CarImageScreen extends Component {
+export default class LicenseImageScreen extends Component {
     utils = new Utils();
     puantajService=new PuantajService();
 
     render() {
-        const carImages=[];
-        this.props.carImages.map((image, index) => (
-            carImages.push({
+        const licenseImages=[];
+        this.props.licenseImages.map((image, index) => (
+            licenseImages.push({
                 source:{
                     uri:image.fullPath
                 }
@@ -25,14 +25,14 @@ export default class CarImageScreen extends Component {
         return (
             <Grid style={{ paddingLeft: 5, paddingRight: 5, paddingTop: 2 }}>
                 <Row size={10} style={{ marginBottom: 5 }}>
-                    <Button full light onPress={() => this.utils.pickImage().then(t=> this.addImage(t))}>
+                    <Button full light onPress={() => this.utils.pickImage().then(t=> this.addLicenseImage(t))}>
                         <Text>Yeni Resim Ekle</Text>
                     </Button>
                 </Row>
-                <Row size={80}>
+                <Row size={80}  style={{ paddingLeft: 5, paddingRight: 5, paddingTop: -50 }}>
                     <Gallery
-                        style={{backgroundColor: 'white' }}
-                        images={carImages}
+                        style={{flex:1, backgroundColor: 'white' }}
+                        images={licenseImages}
                     />
                 </Row>
             </Grid>
@@ -40,25 +40,25 @@ export default class CarImageScreen extends Component {
      }
 
      //api methods
-     addImage(image) {
+     addLicenseImage(image) {
         var request = new AddWehicleImageRequestModel();
         request.Token = this.props.token;
-        request.ID = this.props.carInsuranceInfo.ID;
+        request.ID = this.props.carLicenseResponse.ID;
         request.startDate = "";
         request.endDate = "";
         request.entryID = this.props.selectedCarId;
-        request.startEndDocumentType = "9"; //Image
-        request.fileLocationType = "9"; //Image
+        request.startEndDocumentType = "1"; //Ruhsat
+        request.fileLocationType = "1"; //Ruhsat
         request.force = "false";
         request.image = image.uri;
-        request.sigortaID = this.props.carInsuranceInfo.sigortaID;
-        request.plaka = this.props.carInsuranceInfo.plaka;
+        request.sigortaID = this.props.carLicenseResponse.ruhsatID;
+        request.plaka = this.props.carLicenseResponse.plaka;
         request.isDateRequired = "false";
 
-        this.puantajService.addImage(request).then(responseJson => {         
+        this.puantajService.addImage(request).then(responseJson => {
+            this.props.reloadLicenseImages(this.props.selectedCarId);
             if (responseJson.IsSuccess) {
-                Alert.alert("Araba resmi eklendi");
-                this.props.reloadCarImages(request.entryID);
+                Alert.alert("Ruhsat resmi eklendi");
             }
             else {
                 Alert.alert(responseJson.ExceptionMsg);
