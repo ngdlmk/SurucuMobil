@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Image } from 'react-native';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { Container,  Content, Text, Button, Icon,Header,Tabs,Tab,TabHeading} from 'native-base';
-import {CarInformationScreen} from './tabs/car'
+import {CarInformationScreen,CarImageScreen} from './tabs/car'
 import { Dropdown } from 'react-native-material-dropdown';
 import {MapService,PuantajService} from '../services';
-import {GetCarsModel,GetAracDetailsByAracIdModel} from '../models';
+import {GetCarsModel,GetAracDetailsByAracId} from '../models';
 import TokenRequestModel from '../models/TokenRequestModel'
 import {AsyncStorage} from 'react-native';
 
@@ -42,6 +42,8 @@ export default class CarScreen extends Component {
             }
         }
       },
+      carInsuranceInfo:{},
+      carImages:[],
       selectedTab:-1
     };
 
@@ -66,12 +68,12 @@ export default class CarScreen extends Component {
       <Container>
         <Content> 
           <Dropdown label='Araçlar' data={this.state.cars} onChangeText={this.onCarChangeEvent}/>
-          <Tabs initialPage={-1} page={this.state.selectedTab} style={{paddingTop:5}} >
+          <Tabs initialPage={-1} page={this.state.selectedTab} style={{paddingTop:5}} locked={true}>
             <Tab heading={<TabHeading><Icon name="bus" /></TabHeading>}>
               <CarInformationScreen carDetail={this.state.carDetail}/>
             </Tab>
             <Tab heading={<TabHeading><Icon name="bus" /></TabHeading>}>
-            <Text>Second tab</Text>
+              <CarImageScreen carInsuranceInfo={this.state.carInsuranceInfo} carImages={this.state.carImages}/>
             </Tab>
             <Tab heading={<TabHeading><Icon name="ios-filing" /></TabHeading>}>
             </Tab>
@@ -109,26 +111,51 @@ export default class CarScreen extends Component {
     });
   }
 
-  getAracDetails(wehicleId) {
-    var request = new GetAracDetailsByAracIdModel();
+  getCarDetails(carId) {
+    var request = new GetAracDetailsByAracId();
     request.Token = this.state.tokenRequestModel.Token;
-    request.AracId = wehicleId;
+    request.AracId = carId;
 
     this.puantajService.getAracDetailsByAracId(request).then(responseJson => {
         this.setState({
             carDetail: responseJson.Data.wehicleList[0],
             selectedTab:0
         });
+
+        this.getCarImages(carId);
     }).catch((error) => {
         console.error(error);
     });
-}
+  }
+
+  getCarImages(carId) {
+    var request = new GetAracDetailsByAracId();
+    request.Token = this.state.tokenRequestModel.Token;
+    request.AracId = carId;
+    request.SType = "9";
+    request.DType = "9";
+
+    this.puantajService.getAracResimlerByAracId(request).then(responseJson => {
+        if (responseJson.Data) {
+            this.setState({
+                carInsuranceInfo: responseJson.Data.insurance,
+            });
+            if (responseJson.Data.imageList.length > 0) {
+                this.setState({
+                  carImages: responseJson.Data.imageList,
+                });
+            }
+        }           
+    }).catch((error) => {
+        console.error(error);
+    });
+  }
 
   //dropdown change event
   onCarChangeEvent(selectedValue) {
     this.state.cars.map(car=>{
       if(car.value==selectedValue && car.key!=this.state.selectedCarId){  
-        this.getAracDetails(car.key);
+        this.getCarDetails(car.key);
       }
     })
   }  

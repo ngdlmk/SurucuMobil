@@ -8,6 +8,6 @@ export { default as GetRoutesModel } from './GetRoutesModel';
 export { default as GetVoyagesModel } from './GetVoyagesModel';
 export { default as GetStationsModel } from './GetStationsModel';
 export { default as GetDirectionsModel } from './GetDirectionsModel';
-export { default as GetAracDetailsByAracIdModel } from './GetAracDetailsByAracIdModel';
+export { default as GetAracDetailsByAracId } from './GetAracDetailsByAracId';
 
 
