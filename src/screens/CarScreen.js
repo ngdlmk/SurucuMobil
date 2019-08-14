@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Image } from 'react-native';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { Container,  Content, Text, Button, Icon,Header,Tabs,Tab,TabHeading} from 'native-base';
-import {CarInformationScreen,CarImageScreen, LicenseImageScreen,InsuranceImageScreen} from './tabs/car'
+import {CarInformationScreen,CarImageScreen, LicenseImageScreen,InsuranceImageScreen,ImmsImageScreen} from './tabs/car'
 import { Dropdown } from 'react-native-material-dropdown';
 import {MapService,PuantajService} from '../services';
 import {GetCarsModel,GetAracDetailsByAracId} from '../models';
@@ -48,13 +48,17 @@ export default class CarScreen extends Component {
       carLicenseResponse:{},
       licenseImages:[],
       insuranceImages:[],
-      carInsuranceResponse:{}
+      carInsuranceResponse:{},      
+      immsImages:[],
+      carImmsResponse:{},
     };
 
     this.getCars=this.getCars.bind(this);
     this.getCarImages=this.getCarImages.bind(this);
     this.getCarLicense=this.getCarLicense.bind(this);
     this.getCarInsurance=this.getCarInsurance.bind(this);
+    this.getCarImms=this.getCarImms.bind(this);
+
     this.onCarChangeEvent = this.onCarChangeEvent.bind(this);
   }
 
@@ -95,6 +99,9 @@ export default class CarScreen extends Component {
                               selectedCarId={this.state.selectedCarId} navigation={this.props.navigation}/>          
             </Tab>
             <Tab heading={<TabHeading><Icon name="car" /></TabHeading>}>
+              <ImmsImageScreen immsImages={this.state.immsImages} carImmsResponse={this.state.carImmsResponse}
+                              reloadImmsImages={this.getCarImms} token={this.state.tokenRequestModel.Token} 
+                              selectedCarId={this.state.selectedCarId}/>
             </Tab>
             <Tab heading={<TabHeading><Icon name="ios-body" /></TabHeading>}>
             </Tab>
@@ -140,6 +147,7 @@ export default class CarScreen extends Component {
         this.getCarImages(carId,false);
         this.getCarLicense(carId,false);
         this.getCarInsurance(carId,false);
+        this.getCarImms(carId,false);
 
     }).catch((error) => {
         console.error(error);
@@ -212,6 +220,30 @@ export default class CarScreen extends Component {
         console.error(error);
     });
   }
+  
+  getCarImms(carId,isSelectedTab) {
+    var request = new GetAracDetailsByAracId();
+    request.Token = this.state.tokenRequestModel.Token;
+    request.AracId = carId;
+    request.SType = 2;
+    request.DType = "3";
+
+    this.puantajService.getAracSigortaByAracId(request).then(responseJson => {
+        if (responseJson.Data) {
+            this.setState({
+                carImmsResponse: responseJson.Data.insurance,
+                selectedTab:isSelectedTab?4:0
+            });
+            if (responseJson.Data.imageList.length > 0) {
+                this.setState({
+                    immsImages: responseJson.Data.imageList
+                });
+            }
+        }
+    }).catch((error) => {
+        console.error(error);
+    });
+}
 
   //dropdown change event
   onCarChangeEvent(selectedValue) {
