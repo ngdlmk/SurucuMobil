@@ -5,6 +5,7 @@ import CarScreen from '../CarScreen'
 import MainScreen from '../MainScreen'
 import DriverScreen from '../DriverScreen'
 import RouteNavigator from '../navigators/RouteNavigator'
+import CarNavigator from '../navigators/CarNavigator'
 import WriteCeturScreen from '../WriteCeturScreen'
 import SettingScreen from '../SettingScreen'
 import ExitScreen from '../ExitScreen'
@@ -31,7 +32,7 @@ export const MainScreenStackNavigator = createStackNavigator({
    
   export const CarScreenStackNavigator = createStackNavigator({
     Car: {
-      screen: CarScreen,
+      screen: CarNavigator,
       navigationOptions: ({ navigation }) => ({
         title: menuTitle.CarScreenTitle,
         headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,

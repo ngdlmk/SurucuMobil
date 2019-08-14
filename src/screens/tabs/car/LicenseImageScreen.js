@@ -1,41 +1,35 @@
 import React, { Component } from 'react';
-import { ScrollView } from 'react-native';
-import { Row, Grid } from 'react-native-easy-grid';
-import { Button,  Content, Text} from 'native-base';
-import Gallery from 'react-native-image-gallery'
+import { Button,  Text} from 'native-base';
 import Utils from '../../../common/utils';
 import {PuantajService} from '../../../services';
 import {AddWehicleImageRequestModel} from '../../../../src/models';
-import {Alert} from 'react-native';
+import {Alert,View} from 'react-native';
+import { SliderBox } from 'react-native-image-slider-box';
+import * as Constant from '../../../data/Constants';
 
 export default class LicenseImageScreen extends Component {
     utils = new Utils();
     puantajService=new PuantajService();
 
+    constructor(props) {
+        super(props);
+    
+        this.imageOperation=this.imageOperation.bind(this);
+    }
+
     render() {
         const licenseImages=[];
         this.props.licenseImages.map((image, index) => (
-            licenseImages.push({
-                source:{
-                    uri:image.fullPath
-                }
-            })
+            licenseImages.push(image.fullPath)
         ));
 
         return (
-            <Grid style={{ paddingLeft: 5, paddingRight: 5, paddingTop: 2 }}>
-                <Row size={10} style={{ marginBottom: 5 }}>
-                    <Button full light onPress={() => this.utils.pickImage().then(t=> this.addLicenseImage(t))}>
-                        <Text>Yeni Resim Ekle</Text>
-                    </Button>
-                </Row>
-                <Row size={80}  style={{ paddingLeft: 5, paddingRight: 5, paddingTop: -50 }}>
-                    <Gallery
-                        style={{flex:1, backgroundColor: 'white' }}
-                        images={licenseImages}
-                    />
-                </Row>
-            </Grid>
+            <View style={{paddingLeft: 5, paddingRight: 5, paddingTop: 2 }}>         
+                <Button light onPress={this.imageOperation}>
+                    <Text>Yeni Ruhsat Resmi Ekle</Text>
+                </Button>       
+                <SliderBox images={licenseImages} sliderBoxHeight={400} style={{paddingTop: 10 }}/>
+            </View>
         );
      }
 
@@ -56,7 +50,7 @@ export default class LicenseImageScreen extends Component {
         request.isDateRequired = "false";
 
         this.puantajService.addImage(request).then(responseJson => {
-            this.props.reloadLicenseImages(this.props.selectedCarId);
+            this.props.reloadLicenseImages(this.props.selectedCarId,true);
             if (responseJson.IsSuccess) {
                 Alert.alert("Ruhsat resmi eklendi");
             }
@@ -67,4 +61,14 @@ export default class LicenseImageScreen extends Component {
             console.error(error);
         });
     }
+
+    //other operation
+    imageOperation(){
+        if(this.props.selectedCarId===0){
+            Alert.alert(Constant.ErrorText,"Araç seçiniz")
+            return;
+        }
+
+        this.utils.pickImage().then(t=> this.addLicenseImage(t))
+     }
    }

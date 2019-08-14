@@ -1,41 +1,35 @@
 import React, { Component } from 'react';
-import { ScrollView } from 'react-native';
-import { Row, Grid } from 'react-native-easy-grid';
-import { Button,  Content, Text} from 'native-base';
-import Gallery from 'react-native-image-gallery'
+import { Button,   Text} from 'native-base';
+import { SliderBox } from 'react-native-image-slider-box';
 import Utils from '../../../common/utils';
 import {PuantajService} from '../../../services';
 import {AddWehicleImageRequestModel} from '../../../../src/models';
-import {Alert} from 'react-native';
+import {Alert,View} from 'react-native';
+import * as Constant from '../../../data/Constants';
 
 export default class CarImageScreen extends Component {
     utils = new Utils();
     puantajService=new PuantajService();
 
+    constructor(props) {
+        super(props);
+    
+        this.imageOperation=this.imageOperation.bind(this);
+    }
+
     render() {
         const carImages=[];
         this.props.carImages.map((image, index) => (
-            carImages.push({
-                source:{
-                    uri:image.fullPath
-                }
-            })
+            carImages.push(image.fullPath)
         ));
 
         return (
-            <Grid style={{ paddingLeft: 5, paddingRight: 5, paddingTop: 2 }}>
-                <Row size={10} style={{ marginBottom: 5 }}>
-                    <Button full light onPress={() => this.utils.pickImage().then(t=> this.addImage(t))}>
-                        <Text>Yeni Resim Ekle</Text>
-                    </Button>
-                </Row>
-                <Row size={80}>
-                    <Gallery
-                        style={{backgroundColor: 'white' }}
-                        images={carImages}
-                    />
-                </Row>
-            </Grid>
+            <View style={{paddingLeft: 5, paddingRight: 5, paddingTop: 2 }}>         
+                <Button light onPress={this.imageOperation}>
+                    <Text>Yeni Araç Resmi Ekle</Text>
+                </Button>       
+                <SliderBox images={carImages} sliderBoxHeight={400} style={{paddingTop: 10 }}/>
+            </View>
         );
      }
 
@@ -58,7 +52,7 @@ export default class CarImageScreen extends Component {
         this.puantajService.addImage(request).then(responseJson => {         
             if (responseJson.IsSuccess) {
                 Alert.alert("Araba resmi eklendi");
-                this.props.reloadCarImages(request.entryID);
+                this.props.reloadCarImages(request.entryID,true);
             }
             else {
                 Alert.alert(responseJson.ExceptionMsg);
@@ -67,4 +61,14 @@ export default class CarImageScreen extends Component {
             console.error(error);
         });
     }
+
+    //other operation
+    imageOperation(){
+        if(this.props.selectedCarId===0){
+            Alert.alert(Constant.ErrorText,"Araç seçiniz")
+            return;
+        }
+
+        this.utils.pickImage().then(t=> this.addImage(t))
+     }
    }
