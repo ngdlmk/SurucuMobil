@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Image } from 'react-native';
-import { Col, Row, Grid } from 'react-native-easy-grid';
-import { Container,  Content, Text, Button, Icon,Header,Tabs,Tab,TabHeading} from 'native-base';
-import {CarInformationScreen,CarImageScreen, LicenseImageScreen,InsuranceImageScreen,ImmsImageScreen,ExaminationImageScreen} from './tabs/car'
+import { Container,  Content, Icon,Tabs,Tab,TabHeading} from 'native-base';
+import {CarInformationScreen,CarImageScreen, LicenseImageScreen,InsuranceImageScreen,ImmsImageScreen,
+  ExaminationImageScreen,RoutePermissionDocumentImageScreen} from './tabs/car'
 import { Dropdown } from 'react-native-material-dropdown';
 import {MapService,PuantajService} from '../services';
 import {GetCarsModel,GetAracDetailsByAracId} from '../models';
@@ -53,6 +52,8 @@ export default class CarScreen extends Component {
       carImmsResponse:{},
       examinationImages:[],
       carExaminationResponse:{},
+      routePermissionDocumentImages:[],
+      carRoutePermissionDocumentResponse:{},
     };
 
     this.getCars=this.getCars.bind(this);
@@ -61,6 +62,7 @@ export default class CarScreen extends Component {
     this.getCarInsurance=this.getCarInsurance.bind(this);
     this.getCarImms=this.getCarImms.bind(this);
     this.getCarExamination=this.getCarExamination.bind(this);
+    this.getCarRoutePermissionDocument=this.getCarRoutePermissionDocument.bind(this);
 
     this.onCarChangeEvent = this.onCarChangeEvent.bind(this);
   }
@@ -112,6 +114,9 @@ export default class CarScreen extends Component {
                               selectedCarId={this.state.selectedCarId} navigation={this.props.navigation}/>
             </Tab>
             <Tab heading={<TabHeading><Icon name="ios-document" /></TabHeading>}>
+            <RoutePermissionDocumentImageScreen routePermissionDocumentImages={this.state.routePermissionDocumentImages} carRoutePermissionDocumentResponse={this.state.carRoutePermissionDocumentResponse}
+                              reloadRoutePermissionDocumentImages={this.getCarRoutePermissionDocument} token={this.state.tokenRequestModel.Token} 
+                              selectedCarId={this.state.selectedCarId} navigation={this.props.navigation}/>
             </Tab>
           </Tabs>  
         </Content>
@@ -155,6 +160,7 @@ export default class CarScreen extends Component {
         this.getCarInsurance(carId,false);
         this.getCarImms(carId,false);
         this.getCarExamination(carId,false);
+        this.getCarRoutePermissionDocument(carId,false);
 
     }).catch((error) => {
         console.error(error);
@@ -268,6 +274,28 @@ getCarExamination(carId,isSelectedTab) {
           if (responseJson.Data.imageList.length > 0) {
               this.setState({
                 examinationImages: responseJson.Data.imageList
+              });
+          }
+      }
+  }).catch((error) => {
+      console.error(error);
+  });
+}
+
+getCarRoutePermissionDocument(carId,isSelectedTab) {
+  var request = new GetAracDetailsByAracId();
+  request.Token = this.state.tokenRequestModel.Token;
+  request.AracId = carId;
+
+  this.puantajService.getGuzergahIzinByAracId(request).then(responseJson => {
+      if (responseJson.Data) {             
+          this.setState({
+              carRoutePermissionDocumentResponse: responseJson.Data.guzergahIzin,
+              selectedTab:isSelectedTab?6:0
+          }); 
+          if (responseJson.Data.imageList.length > 0) {
+              this.setState({
+                routePermissionDocumentImages: responseJson.Data.imageList
               });
           }
       }

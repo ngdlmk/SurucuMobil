@@ -2,6 +2,7 @@ import { createStackNavigator, createAppContainer } from "react-navigation";
 import CarScreen from '../CarScreen'
 import InsuranceImageModalScreen from '../modals/InsuranceImageModalScreen'
 import ExaminationImageModalScreen from '../modals/ExaminationImageModalScreen'
+import RoutePermissionDocumentModalScreen from '../modals/RoutePermissionDocumentModalScreen'
 
 const RootStack = createStackNavigator(
   {
@@ -13,6 +14,9 @@ const RootStack = createStackNavigator(
     },
     ExaminationImageModal: {
       screen: ExaminationImageModalScreen,
+    },
+    RoutePermissionDocumentImageModal: {
+      screen: RoutePermissionDocumentModalScreen,
     },
   },
   {
