@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Image } from 'react-native';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { Container,  Content, Text, Button, Icon,Header,Tabs,Tab,TabHeading} from 'native-base';
-import {CarInformationScreen,CarImageScreen, LicenseImageScreen,InsuranceImageScreen,ImmsImageScreen} from './tabs/car'
+import {CarInformationScreen,CarImageScreen, LicenseImageScreen,InsuranceImageScreen,ImmsImageScreen,ExaminationImageScreen} from './tabs/car'
 import { Dropdown } from 'react-native-material-dropdown';
 import {MapService,PuantajService} from '../services';
 import {GetCarsModel,GetAracDetailsByAracId} from '../models';
@@ -51,6 +51,8 @@ export default class CarScreen extends Component {
       carInsuranceResponse:{},      
       immsImages:[],
       carImmsResponse:{},
+      examinationImages:[],
+      carExaminationResponse:{},
     };
 
     this.getCars=this.getCars.bind(this);
@@ -58,6 +60,7 @@ export default class CarScreen extends Component {
     this.getCarLicense=this.getCarLicense.bind(this);
     this.getCarInsurance=this.getCarInsurance.bind(this);
     this.getCarImms=this.getCarImms.bind(this);
+    this.getCarExamination=this.getCarExamination.bind(this);
 
     this.onCarChangeEvent = this.onCarChangeEvent.bind(this);
   }
@@ -104,6 +107,9 @@ export default class CarScreen extends Component {
                               selectedCarId={this.state.selectedCarId}/>
             </Tab>
             <Tab heading={<TabHeading><Icon name="ios-body" /></TabHeading>}>
+               <ExaminationImageScreen examinationImages={this.state.examinationImages} carExaminationResponse={this.state.carExaminationResponse}
+                              reloadExaminationImages={this.getCarExamination} token={this.state.tokenRequestModel.Token} 
+                              selectedCarId={this.state.selectedCarId} navigation={this.props.navigation}/>
             </Tab>
             <Tab heading={<TabHeading><Icon name="ios-document" /></TabHeading>}>
             </Tab>
@@ -148,6 +154,7 @@ export default class CarScreen extends Component {
         this.getCarLicense(carId,false);
         this.getCarInsurance(carId,false);
         this.getCarImms(carId,false);
+        this.getCarExamination(carId,false);
 
     }).catch((error) => {
         console.error(error);
@@ -243,6 +250,30 @@ export default class CarScreen extends Component {
     }).catch((error) => {
         console.error(error);
     });
+}
+
+getCarExamination(carId,isSelectedTab) {
+  var request = new GetAracDetailsByAracId();
+  request.Token = this.state.tokenRequestModel.Token;
+  request.AracId = carId;
+  request.SType = 3;
+  request.DType = "4";
+
+  this.puantajService.getAracSigortaByAracId(request).then(responseJson => {
+      if (responseJson.Data) {
+          this.setState({
+              carExaminationResponse: responseJson.Data.insurance,
+              selectedTab:isSelectedTab?5:0
+          });
+          if (responseJson.Data.imageList.length > 0) {
+              this.setState({
+                examinationImages: responseJson.Data.imageList
+              });
+          }
+      }
+  }).catch((error) => {
+      console.error(error);
+  });
 }
 
   //dropdown change event
