@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Container,  Content, Icon,Tabs,Tab,TabHeading} from 'native-base';
-import {DriverInformationScreen,LicenseInformationScreen} from './tabs/driver'
+import {DriverInformationScreen,LicenseInformationScreen,Src2ImageScreen,PsychoTechniqueImageScreen} from './tabs/driver'
 import {DriverService,PuantajService} from '../services';
 import TokenRequestModel from '../models/TokenRequestModel'
 import {AsyncStorage} from 'react-native';
-import {GetDriverInformationRequestModel,GetLicenseInformationRequestModel,GetAracDetailsByAracId} from '../models';
+import {GetDriverInformationRequestModel,GetAracDetailsByAracId} from '../models';
 
 var StorageKeys=require('../data/StorageKeys.json');
  
@@ -22,10 +22,16 @@ export default class DriverScreen extends Component {
       driverInformation:{},
       licenseInsuranceInfo:{},
       licenseImages:[],
+      src2InsuranceInfo:{},
+      src2Images:[],
+      psychoTechniqueInsuranceInfo:{},
+      psychoTechniqueImages:[],
     };
 
     this.getDriverInformation=this.getDriverInformation.bind(this);
     this.getLicenseInformation=this.getLicenseInformation.bind(this);
+    this.getSrc2Information=this.getSrc2Information.bind(this);
+    this.getPsychoTechniqueInformation=this.getPsychoTechniqueInformation.bind(this);
   }
 
   componentDidMount(){
@@ -43,6 +49,8 @@ export default class DriverScreen extends Component {
 
       this.getDriverInformation(personId);
       this.getLicenseInformation(personId,false);
+      this.getSrc2Information(personId,false);
+      this.getPsychoTechniqueInformation(personId,false);
     })
   }
 
@@ -56,8 +64,19 @@ export default class DriverScreen extends Component {
             </Tab>
             <Tab heading={<TabHeading><Icon name="ios-filing" /></TabHeading>}>              
               <LicenseInformationScreen licenseImages={this.state.licenseImages} personId={this.state.personId}
-                    licenseInsuranceInfo={this.state.licenseInsuranceInfo} token={this.state.tokenRequestModel.Token} />
+                    licenseInsuranceInfo={this.state.licenseInsuranceInfo} token={this.state.tokenRequestModel.Token}
+                    reloadLicenseImages={this.getLicenseInformation} />
             </Tab>
+            <Tab heading={<TabHeading><Icon name="md-git-compare" /></TabHeading>}>                     
+              <Src2ImageScreen src2Images={this.state.src2Images} src2InsuranceInfo={this.state.src2InsuranceInfo}
+                              reloadSrc2Images={this.getSrc2Information} token={this.state.tokenRequestModel.Token} 
+                              personId={this.state.personId} navigation={this.props.navigation}/>          
+            </Tab> 
+            <Tab heading={<TabHeading><Icon name="ios-body" /></TabHeading>}>                     
+              <PsychoTechniqueImageScreen psychoTechniqueImages={this.state.psychoTechniqueImages} psychoTechniqueInsuranceInfo={this.state.psychoTechniqueInsuranceInfo}
+                              reloadPsychoTechniqueImages={this.getPsychoTechniqueInformation} token={this.state.tokenRequestModel.Token} 
+                              personId={this.state.personId} navigation={this.props.navigation}/>          
+            </Tab> 
           </Tabs>  
         </Content>
        </Container>     
@@ -105,4 +124,53 @@ export default class DriverScreen extends Component {
         console.error(error);
     });
   }
+
+  getSrc2Information(personId,isSelectedTab) {
+    var request = new GetAracDetailsByAracId();
+    request.Token = this.state.tokenRequestModel.Token;
+    request.AracId = personId;
+    request.SType = "5";
+    request.DType = "7";
+
+    this.puantajService.getAracResimlerByAracId(request).then(responseJson => {
+        if (responseJson.Data) {
+            this.setState({
+                src2InsuranceInfo: responseJson.Data.insurance,
+                selectedTab:isSelectedTab?2:0
+            });
+            if (responseJson.Data.imageList.length > 0) {
+                this.setState({
+                  src2Images: responseJson.Data.imageList
+                });
+            }
+        }           
+    }).catch((error) => {
+        console.error(error);
+    });
+  }
+
+  getPsychoTechniqueInformation(personId,isSelectedTab) {
+    var request = new GetAracDetailsByAracId();
+    request.Token = this.state.tokenRequestModel.Token;
+    request.AracId = personId;
+    request.SType = "6";
+    request.DType = "8";
+
+    this.puantajService.getAracResimlerByAracId(request).then(responseJson => {
+        if (responseJson.Data) {
+            this.setState({
+                psychoTechniqueInsuranceInfo: responseJson.Data.insurance,
+                selectedTab:isSelectedTab?3:0
+            });
+            if (responseJson.Data.imageList.length > 0) {
+                this.setState({
+                  psychoTechniqueImages: responseJson.Data.imageList
+                });
+            }
+        }           
+    }).catch((error) => {
+        console.error(error);
+    });
+  }
+
 }

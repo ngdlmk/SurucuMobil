@@ -1,11 +1,10 @@
 import React from 'react';
 import {createStackNavigator} from 'react-navigation';
 import NavigationDrawerStructure from './NavigationDrawerStructure'
-import CarScreen from '../CarScreen'
 import MainScreen from '../MainScreen'
-import DriverScreen from '../DriverScreen'
 import RouteNavigator from '../navigators/RouteNavigator'
 import CarNavigator from '../navigators/CarNavigator'
+import DriverNavigator from '../navigators/DriverNavigator'
 import WriteCeturScreen from '../WriteCeturScreen'
 import SettingScreen from '../SettingScreen'
 import ExitScreen from '../ExitScreen'
@@ -46,7 +45,7 @@ export const MainScreenStackNavigator = createStackNavigator({
    
   export const DriverScreenStackNavigator = createStackNavigator({
     Driver: {
-      screen: DriverScreen,
+      screen: DriverNavigator,
       navigationOptions: ({ navigation }) => ({
         title: menuTitle.DriverScreenTitle,
         headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,

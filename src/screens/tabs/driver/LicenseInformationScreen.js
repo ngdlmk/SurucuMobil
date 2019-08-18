@@ -39,18 +39,19 @@ export default class LicenseInformationScreen extends Component {
         request.startDate = "";
         request.endDate = "";
         request.entryID = this.props.personId;
-        request.startEndDocumentType = "6"; //ehliyet bilgi
+        request.startEndDocumentType = "4"; //ehliyet bilgi
         request.fileLocationType = "6"; //ehliyet bilgi
         request.force = "false";
         request.image = image.uri;
         request.sigortaID = this.props.licenseInsuranceInfo.sigortaID;
         request.plaka = this.props.licenseInsuranceInfo.plaka;
         request.isDateRequired = "false";
+        request.entryType=request.fileLocationType;
 
         this.puantajService.addImage(request).then(responseJson => {         
             if (responseJson.IsSuccess) {
-                Alert.alert("Araba resmi eklendi");
-                this.props.reloadCarImages(request.entryID,true);
+                Alert.alert("Ehliyet resmi eklendi");
+                this.props.reloadLicenseImages(request.entryID,true);
             }
             else {
                 Alert.alert(responseJson.ExceptionMsg);
