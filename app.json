@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Surucu Mobil",
-    "slug": "SurucuMobil",
+    "name": "Çetur Driver",
+    "slug": "CeturDriver",
     "privacy": "public",
     "sdkVersion": "33.0.0",
     "platforms": [
@@ -27,7 +27,7 @@
       "supportsTablet": true
     },
     "android":{
-      "package":"com.surucumobil.cetur",
+      "package":"com.ceturdriver.cetur",
       "versionCode":1,
       "permissions":[],
       "icon": "./assets/icon.png",
