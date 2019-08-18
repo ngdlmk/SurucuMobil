@@ -11,6 +11,9 @@ export { default as GetDirectionsModel } from './GetDirectionsModel';
 export { default as GetAracDetailsByAracId } from './GetAracDetailsByAracId';
 export { default as AddWehicleImageRequestModel } from './AddWehicleImageRequestModel';
 export { default as GetDriverInformationRequestModel } from './GetDriverInformationRequestModel';
+export { default as GetLicenseInformationRequestModel } from './GetLicenseInformationRequestModel';
+
+
 
 
 

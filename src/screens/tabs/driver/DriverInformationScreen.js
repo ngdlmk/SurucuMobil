@@ -19,9 +19,9 @@ export default class DriverInformationScreen extends Component {
                </CardItem>
                <CardItem>
                     <Left >
-                         <Image 
-                         style={{width: 125, height: 125}}
-                         source={{uri: this.props.driverInformation.Avatar}}/>
+                         {this.props.driverInformation.Avatar!=undefined && this.props.driverInformation.Avatar!=""?
+                         <Image style={{width: 125, height: 125}} source={{uri: this.props.driverInformation.Avatar}}/>:
+                         <Image style={{width: 125, height: 125}} source={require('../../../../assets/noperson.png')}/>} 
                     </Left>
                     <Body>                    
                          <Text>Ad : {this.props.driverInformation.Name}</Text>

@@ -14,4 +14,16 @@ export default class DriverService {
             return result.json();
         });
     }
+
+    getLicenseInformation(request) {
+        return fetch(this.host.ServiceUrl + 'Driver/GetLicenseInformation', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(request),
+        }).then(function (result) {
+            return result.json();
+        });
+    }
 }
