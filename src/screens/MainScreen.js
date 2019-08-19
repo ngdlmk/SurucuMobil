@@ -14,8 +14,8 @@ export default class MainScreen extends Component {
   }
   render() {
     return (
-      <Container>
-        <Content>
+      <Container style={{paddingTop:50}}>
+        <Content >
             <Button rounded block info style={styles.Button}
               onPress={()=>this.props.navigation.navigate(navigateKeys.CarKey)}>
               <Text>{menuTitle.CarScreenTitle}</Text>
@@ -29,13 +29,17 @@ export default class MainScreen extends Component {
               <Text>{menuTitle.RouteScreenTitle}</Text>
             </Button>
             <Button rounded block info style={styles.Button}
+              onPress={()=>this.props.navigation.navigate(navigateKeys.ChangePasswordKey)}>
+              <Text>{menuTitle.ChangePasswordScreenTitle}</Text>
+            </Button>
+            {/* <Button rounded block info style={styles.Button}
               onPress={()=>this.props.navigation.navigate(navigateKeys.WriteCeturKey)}>
               <Text>{menuTitle.WriteCeturScreenTitle}</Text>
             </Button>
             <Button rounded block info style={styles.Button}
               onPress={()=>this.props.navigation.navigate(navigateKeys.SettingKey)}>
               <Text>{menuTitle.SettingScreenTitle}</Text>
-            </Button>
+            </Button> */}
         </Content>
     </Container>
     );

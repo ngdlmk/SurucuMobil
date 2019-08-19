@@ -39,18 +39,18 @@ const MenuScreen = createDrawerNavigator({
       drawerLabel: menuTitle.RouteScreenTitle,
     },
   },
-  Screen5: {
-    screen: WriteCeturScreenStackNavigator,
-    navigationOptions: {
-      drawerLabel: menuTitle.WriteCeturScreenTitle,
-    },
-  },
-  Screen6: {
-    screen: SettingScreenStackNavigator,
-    navigationOptions: {
-      drawerLabel: menuTitle.SettingScreenTitle,
-    },
-  },  
+  // Screen5: {
+  //   screen: WriteCeturScreenStackNavigator,
+  //   navigationOptions: {
+  //     drawerLabel: menuTitle.WriteCeturScreenTitle,
+  //   },
+  // },
+  // Screen6: {
+  //   screen: SettingScreenStackNavigator,
+  //   navigationOptions: {
+  //     drawerLabel: menuTitle.SettingScreenTitle,
+  //   },
+  // },  
   Screen7: {
     screen: ChangePasswordScreenStackNavigator,
     navigationOptions: {

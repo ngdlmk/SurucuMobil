@@ -6,5 +6,6 @@
     "WriteCeturKey":"WriteCetur",
     "SettingKey":"Setting",
     "MenuKey":"Menu",
-    "ExitKey":"Exit"
+    "ExitKey":"Exit",
+    "ChangePasswordKey":"ChangePassword"
 }
