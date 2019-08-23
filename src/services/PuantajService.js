@@ -98,6 +98,7 @@ export default class PuantajService {
         formData.append('isDateRequired', request.isDateRequired);
         formData.append('entryType', request.entryType);
         formData.append('imageResponseOperation', request.imageResponseOperation);
+        formData.append('IsAuthorizationControl', false);
         
         return fetch(this.host.ServiceUrl + 'Puntaj/AddWehicleImage', {
             method: 'POST',

@@ -137,8 +137,6 @@ addRoutePermissionDocument() {
     request.isDateRequired = "false";
 
     this.puantajService.addImage(request).then(responseJson => {
-        console.warn(responseJson);
-
         Alert.alert("Güzergah izin belge resmi eklendi");
 
         this.props.navigation.goBack()

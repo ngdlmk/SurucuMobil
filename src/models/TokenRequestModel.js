@@ -1,3 +1,4 @@
 export default class TokenRequestModel {
-    Token = ""
+    Token = "";
+    IsAuthorizationControl=false;
 }
