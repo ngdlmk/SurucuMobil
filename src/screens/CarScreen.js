@@ -150,6 +150,10 @@ export default class CarScreen extends Component {
     request.AracId = carId;
 
     this.puantajService.getAracDetailsByAracId(request).then(responseJson => {
+        if (!responseJson.IsSuccess) {          
+          return;       
+        }
+
         this.setState({
             carDetail: responseJson.Data.wehicleList[0],
             selectedTab:0

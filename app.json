@@ -30,7 +30,7 @@
       "package":"com.ceturdriver.cetur",
       "versionCode":1,
       "permissions":[],
-      "icon": "./assets/icon.png",
+      "icon": "./assets/icon.png"
     },
     "description": ""
   }
