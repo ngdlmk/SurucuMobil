@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Image } from 'react-native';
 import { Container,  Content, Card, CardItem,  Text,  Icon, Left, Body } from 'native-base';
+import { ScrollView } from 'react-native';
 
 export default class CarInformationScreen extends Component {
     render() {
       return (
-     <Container>
-        <Content>
-          <Card style={{flex: 0}}>
+        <ScrollView contentContainerStyle={{flexGrow: 1}}>
+          <Card>
                <CardItem>
                     <Left>
                          <Image source={require('../../../../assets/plaka_tr.png')} />
@@ -63,9 +63,7 @@ export default class CarInformationScreen extends Component {
                     <Text> {this.props.carDetail.description}</Text>
                </CardItem>
            </Card>
-         </Content>
-       </Container>
-  
+         </ScrollView>
       );
      }
    }

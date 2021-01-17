@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {AsyncStorage,WebView} from 'react-native';
+import {AsyncStorage} from 'react-native';
+import WebView from "react-native-webview";
 import {GetDirectionsModel} from '../models';
 import MapService from '../services/MapService';
 

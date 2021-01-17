@@ -6,6 +6,7 @@ import {LoginService} from '../services'
 import * as Constant from '../data/Constants'; 
 import {UpdatePasswordMobileModel} from '../models';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 var StorageKeys=require('../data/StorageKeys.json');
 var NavigateKeys=require('../data/NavigateKeys.json');
@@ -35,7 +36,7 @@ export default class ChangePasswordScreen extends Component {
   render() {
     return (
       <Container>
-      <Content style={{ paddingLeft: 5, paddingRight: 5,paddingTop:5 }}>    
+      <Content style={{ paddingHorizontal: 30,paddingTop:5 }}>    
         <Grid style={{ marginTop: 20 }}>          
               <Row size={40} style={{ marginBottom: 40 }}>
                   <Col size={100} style={{ alignContent: "center", alignItems: "center" }}>
@@ -45,8 +46,8 @@ export default class ChangePasswordScreen extends Component {
               <Row size={20} style={{ marginBottom: 5 }}>
                     <Col size={100}>
                         <Item>
-                            <Icon style={{ color: '#E9E5E4', padding: 0 }} name="md-key"></Icon>
                             <Input value={this.state.oldPassword} 
+                                placeholderTextColor="rgba(0,0,0,0.4)"
                                 onChangeText={(value) => this.setState({ oldPassword: value })}
                                 placeholder='Eski Şifre' />
                         </Item>
@@ -55,20 +56,20 @@ export default class ChangePasswordScreen extends Component {
                 <Row size={20} style={{ marginBottom: 5 }}>
                     <Col size={100}>
                         <Item>
-                            <Icon style={{ color: '#E9E5E4', padding: 0 }} name="md-key"></Icon>
                             <Input secureTextEntry={true} value={this.state.newPassword1} 
+                                placeholderTextColor="rgba(0,0,0,0.4)"
                                 onChangeText={(value) => this.setState({ newPassword1: value })}
-                                placeholder='Yeni Şifre 1' />
+                                placeholder='Yeni Şifre' />
                         </Item>
                     </Col> 
                 </Row>                     
                 <Row size={20} style={{ marginBottom: 5 }}>                 
                     <Col size={100}>
                         <Item>
-                            <Icon style={{ color: '#E9E5E4', padding: 0 }} name="lock"></Icon>
                             <Input secureTextEntry={true} value={this.state.newPassword2} 
+                                placeholderTextColor="rgba(0,0,0,0.4)"
                                 onChangeText={(value) => this.setState({ newPassword2: value })}
-                                placeholder='Yeni Şifre 2' />
+                                placeholder='Yeni Şifre Tekrar' />
                         </Item>
                     </Col>
                 </Row>
@@ -76,10 +77,11 @@ export default class ChangePasswordScreen extends Component {
           <Grid tyle={{ paddingLeft: 5, paddingRight: 5, paddingTop: 5 }}>
               <Row size={20} style={{ alignContent: "center", alignItems: "center" }}>
                   <Col size={50} >
-                   <Button block rounded light
-                          onPress={this.updatePassword.bind(this)}>
-                          <Text>Onayla</Text>
-                      </Button>
+                      <TouchableOpacity 
+                        onPress={this.updatePassword.bind(this)} 
+                        style={{width: '80%', height: 48, borderRadius: 7, backgroundColor: '#4983B7', justifyContent: 'center', alignSelf: 'center', marginTop: 32}}>
+                          <Text style={{color: 'white', fontSize: 17, fontWeight: '600', textAlign: 'center'}}>Onayla</Text>
+                      </TouchableOpacity>
                  </Col>
               </Row>
           </Grid>

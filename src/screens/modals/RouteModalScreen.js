@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Container,  Content,  Grid, Row, Col, Button, Text } from 'native-base';
-import { Dropdown } from 'react-native-material-dropdown';
+import { Dropdown } from 'react-native-material-dropdown-v2';
 import {GetCarsModel,GetProjectsModel,GetRoutesModel,GetVoyagesModel} from '../../models';
 import MapService from '../../services/MapService';
 import {AsyncStorage,Alert} from 'react-native';

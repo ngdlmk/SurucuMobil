@@ -74,6 +74,18 @@ export default class MapService {
             return result.json();
         });
     }
+
+    sendTaskRequest(params) {
+        return fetch("http://apibms.cetur.com.tr/api/sefer/addseferbaslabitirkontrol", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(params),
+        }).then(function (result) {
+            return result.json();
+        });
+    }
 }
 
 

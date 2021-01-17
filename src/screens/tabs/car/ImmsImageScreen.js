@@ -3,7 +3,7 @@ import { Button,  Text} from 'native-base';
 import Utils from '../../../common/utils';
 import {PuantajService} from '../../../services';
 import {AddWehicleImageRequestModel} from '../../../../src/models';
-import {Alert,View} from 'react-native';
+import {Alert,View,Image,ScrollView} from 'react-native';
 import { SliderBox } from 'react-native-image-slider-box';
 import * as Constant from '../../../data/Constants';
 
@@ -24,12 +24,18 @@ export default class ImmsImageScreen extends Component {
         ));
 
         return (
-            <View style={{paddingLeft: 5, paddingRight: 5, paddingTop: 2 }}>         
+            <ScrollView style={{paddingLeft: 5, paddingRight: 5, paddingTop: 2}}>           
                 <Button light onPress={this.imageOperation}>
                     <Text>Yeni IMMS Resmi Ekle</Text>
-                </Button>       
-                <SliderBox images={immsImages} sliderBoxHeight={400} style={{paddingTop: 10 }}/>
-            </View>
+                </Button> 
+                {
+                    immsImages.map(image => {
+                        return (
+                            <Image resizeMode="contain" style={{width: "100%", height: 300}} source={{uri: image}} />
+                        )
+                    })      
+                }       
+            </ScrollView>
         );
      }
 

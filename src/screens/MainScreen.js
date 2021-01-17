@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {StyleSheet,AsyncStorage  } from 'react-native';
 import { Container, Content, Button, Text } from 'native-base';
+import { TouchableOpacity } from 'react-native-gesture-handler';
  
 var menuTitle=require('./../data/MenuTitles.json');
 var navigateKeys=require('../data/NavigateKeys.json');
@@ -32,6 +33,10 @@ export default class MainScreen extends Component {
               onPress={()=>this.props.navigation.navigate(navigateKeys.ChangePasswordKey)}>
               <Text>{menuTitle.ChangePasswordScreenTitle}</Text>
             </Button>
+            <Button rounded block info style={styles.Button}
+              onPress={()=>this.props.navigation.navigate(navigateKeys.MissionTrack)}>
+              <Text>{menuTitle.GorevTakipTitle}</Text>
+            </Button>
             {/* <Button rounded block info style={styles.Button}
               onPress={()=>this.props.navigation.navigate(navigateKeys.WriteCeturKey)}>
               <Text>{menuTitle.WriteCeturScreenTitle}</Text>
@@ -53,6 +58,14 @@ export default class MainScreen extends Component {
   }
 }
 
+const MenuButton = () => {
+  return(
+    <TouchableOpacity style={{width: "95%"}}>
+
+    </TouchableOpacity>
+  )
+}
+ 
 const styles = StyleSheet.create({
   Button: {
     marginTop:20,

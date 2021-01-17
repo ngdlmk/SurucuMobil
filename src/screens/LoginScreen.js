@@ -1,5 +1,5 @@
 import React,{Component} from "react";
-import { Alert, Image, Text, AsyncStorage } from 'react-native';
+import { Alert, Image, Text, AsyncStorage, TouchableOpacity } from 'react-native';
 import { Container, Header, Content, Item, Input, Icon, Button } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import {LoginService} from '../services'
@@ -41,7 +41,7 @@ export default class LoginScreen extends Component {
         textContent={Constant.LoadingText}  
         textStyle={{color: '#FFF' }} />
         }
-          <Grid style={{ marginTop: 70 }}>
+          <Grid style={{ marginTop: 70, marginHorizontal: 30 }}>
               <Row size={40} style={{ marginBottom: 40 }}>
                   <Col size={100} style={{ alignContent: "center", alignItems: "center" }}>
                       <Image source={require('../../assets/bmsLoginLogo.png')} />
@@ -50,8 +50,8 @@ export default class LoginScreen extends Component {
               <Row size={20} style={{ marginBottom: 5 }}>
                   <Col size={100}>
                       <Item>
-                          <Icon style={{ color: '#E9E5E4', padding: 0 }} name="ios-document"></Icon>
                           <Input value={this.state.gsmNumber} keyboardType="numeric"
+                              placeholderTextColor="rgba(0,0,0,0.4)"
                               onChangeText={(value) => this.setState({ gsmNumber: value })}
                               placeholder='Gsm Numarası' />
                       </Item>
@@ -60,8 +60,8 @@ export default class LoginScreen extends Component {
               <Row size={20} style={{ marginBottom: 15 }}>
                   <Col size={100}>
                       <Item>
-                          <Icon style={{ color: '#E9E5E4', padding: 0 }} name="lock"></Icon>
                           <Input secureTextEntry={true} onChangeText={(value) => this.setState({ userPassword: value })}
+                              placeholderTextColor="rgba(0,0,0,0.4)"
                               value={this.state.userPassword} 
                               placeholder='Şifre' />
                       </Item>
@@ -71,10 +71,11 @@ export default class LoginScreen extends Component {
           <Grid tyle={{ paddingLeft: 5, paddingRight: 5, paddingTop: 5 }}>
               <Row size={20} style={{ alignContent: "center", alignItems: "center" }}>
                   <Col size={50} >
-                   <Button block rounded light
-                          onPress={this.loginOperation.bind(this)}>
-                          <Text>Giriş</Text>
-                      </Button>
+                  <TouchableOpacity 
+                        onPress={this.loginOperation.bind(this)}
+                        style={{width: '80%', height: 48, borderRadius: 7, backgroundColor: '#4983B7', justifyContent: 'center', alignSelf: 'center', marginTop: 32}}>
+                          <Text style={{color: 'white', fontSize: 17, fontWeight: '600', textAlign: 'center'}}>Giriş</Text>
+                      </TouchableOpacity>
                  </Col>
               </Row>
           </Grid>
@@ -88,7 +89,7 @@ export default class LoginScreen extends Component {
                   </Col>
               </Row>
           </Grid>
-          <Grid style={{ marginTop: 70 }}>
+          <Grid style={{ marginTop: 20 }}>
               <Row size={100}>
                   <Col size={100} style={{ alignContent: "center", alignItems: "center" }}>
                       <Image style={{ width: 150, height: 38 }} source={require('../../assets/ceturlogo.png')} />

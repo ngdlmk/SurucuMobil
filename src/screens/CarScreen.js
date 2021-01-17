@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { Container,  Content, Icon,Tabs,Tab,TabHeading} from 'native-base';
+import { Container,  Content, Icon,Tabs,Tab,TabHeading, Fab, Button, View} from 'native-base';
 import {CarInformationScreen,CarImageScreen, LicenseImageScreen,InsuranceImageScreen,ImmsImageScreen,
   ExaminationImageScreen,RoutePermissionDocumentImageScreen} from './tabs/car'
-import { Dropdown } from 'react-native-material-dropdown';
+import { Dropdown } from 'react-native-material-dropdown-v2';
 import {MapService,PuantajService} from '../services';
 import {GetCarsModel,GetAracDetailsByAracId} from '../models';
 import TokenRequestModel from '../models/TokenRequestModel'
-import {AsyncStorage} from 'react-native';
+import {AsyncStorage, Text} from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 var StorageKeys=require('../data/StorageKeys.json');
 
@@ -18,6 +19,7 @@ export default class CarScreen extends Component {
     super(props);
 
     this.state = {
+      active: false,
       selectedTab:-1,
       cars:[],      
       selectedCarId:0,   
@@ -81,19 +83,18 @@ export default class CarScreen extends Component {
 
   render() {
     return (     
-      <Container>
-        <Content> 
+      <View style={{flex: 1}}>
           <Dropdown label='Araçlar' data={this.state.cars} onChangeText={this.onCarChangeEvent}/>
-          <Tabs initialPage={-1} page={this.state.selectedTab} style={{paddingTop:5}} locked={true}>
+          <Tabs initialPage={0} page={this.state.selectedTab} locked={true}>
             <Tab heading={<TabHeading><Icon name="bus" /></TabHeading>}>
-              <CarInformationScreen carDetail={this.state.carDetail}/>
+                <CarInformationScreen carDetail={this.state.carDetail}/>
             </Tab>
-            <Tab heading={<TabHeading><Icon name="bus" /></TabHeading>}>
+            <Tab heading={<TabHeading><Icon type="MaterialIcons" name="car-repair" /></TabHeading>}>
               <CarImageScreen carInsuranceInfo={this.state.carInsuranceInfo} carImages={this.state.carImages} 
                               reloadCarImages={this.getCarImages} token={this.state.tokenRequestModel.Token} 
                               selectedCarId={this.state.selectedCarId}/>
             </Tab>
-            <Tab heading={<TabHeading><Icon name="ios-filing" /></TabHeading>}>              
+            <Tab heading={<TabHeading><Icon type="AntDesign" name="idcard" /></TabHeading>}>              
               <LicenseImageScreen licenseImages={this.state.licenseImages} carLicenseResponse={this.state.carLicenseResponse}
                               reloadLicenseImages={this.getCarLicense} token={this.state.tokenRequestModel.Token} 
                               selectedCarId={this.state.selectedCarId}/>
@@ -119,8 +120,7 @@ export default class CarScreen extends Component {
                               selectedCarId={this.state.selectedCarId} navigation={this.props.navigation}/>
             </Tab>
           </Tabs>  
-        </Content>
-       </Container>     
+       </View>     
     );
   }
 
@@ -203,6 +203,7 @@ export default class CarScreen extends Component {
                 selectedTab:isSelectedTab?2:0
             });
             if (responseJson.Data.imageList.length > 0) {
+                console.log("licence image", responseJson.Data.imageList)
                 this.setState({
                     licenseImages: responseJson.Data.imageList
                 });

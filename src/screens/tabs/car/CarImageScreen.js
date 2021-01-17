@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Button,   Text} from 'native-base';
+import { Button, Text} from 'native-base';
 import { SliderBox } from 'react-native-image-slider-box';
 import Utils from '../../../common/utils';
 import {PuantajService} from '../../../services';
 import {AddWehicleImageRequestModel} from '../../../../src/models';
-import {Alert,View} from 'react-native';
+import {Alert,View,ScrollView} from 'react-native';
 import * as Constant from '../../../data/Constants';
 
 export default class CarImageScreen extends Component {
@@ -24,12 +24,18 @@ export default class CarImageScreen extends Component {
         ));
 
         return (
-            <View style={{paddingLeft: 5, paddingRight: 5, paddingTop: 2 }}>         
+            <ScrollView style={{paddingLeft: 5, paddingRight: 5, paddingTop: 2}}>           
                 <Button light onPress={this.imageOperation}>
                     <Text>Yeni Araç Resmi Ekle</Text>
-                </Button>       
-                <SliderBox images={carImages} sliderBoxHeight={400} style={{paddingTop: 10 }}/>
-            </View>
+                </Button>
+                {
+                    carImages.map(image => {
+                        return (
+                            <Image resizeMode="contain" style={{width: "100%", height: 300}} source={{uri: image}} />
+                        )
+                    })      
+                }       
+            </ScrollView>
         );
      }
 

@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { Image } from 'react-native';
+import { Image, ScrollView } from 'react-native';
 import { Container,  Content, Card, CardItem,  Text,  Icon, Left, Body, Right, Footer } from 'native-base';
 
 export default class DriverInformationScreen extends Component {
     render() {
       return (
-     <Container>
-        <Content>
+        <ScrollView>
           <Card style={{flex: 0}}>
                <CardItem style={{backgroundColor:"#5F99D7"}}>
                     <Left >
@@ -64,9 +63,7 @@ export default class DriverInformationScreen extends Component {
                     <Text> {this.props.driverInformation.MailAddress}</Text>
                </CardItem>
            </Card>
-         </Content>
-       </Container>
-  
+         </ScrollView>
       );
      }
    }

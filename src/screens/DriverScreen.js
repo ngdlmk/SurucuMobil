@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container,  Content, Icon,Tabs,Tab,TabHeading} from 'native-base';
+import { Container,  Content, Icon,Tabs,Tab,TabHeading, View} from 'native-base';
 import {DriverInformationScreen,LicenseInformationScreen,Src2ImageScreen,PsychoTechniqueImageScreen} from './tabs/driver'
 import {DriverService,PuantajService} from '../services';
 import TokenRequestModel from '../models/TokenRequestModel'
@@ -56,13 +56,12 @@ export default class DriverScreen extends Component {
 
   render() {
     return (     
-      <Container>
-        <Content> 
+      <View style={{flex: 1}}>
           <Tabs initialPage={-1} page={this.state.selectedTab} style={{paddingTop:5}} locked={true}>
-            <Tab heading={<TabHeading><Icon name="bus" /></TabHeading>}>
+            <Tab heading={<TabHeading><Icon type="FontAwesome" name="drivers-license" /></TabHeading>}>
               <DriverInformationScreen driverInformation={this.state.driverInformation}/>
             </Tab>
-            <Tab heading={<TabHeading><Icon name="ios-filing" /></TabHeading>}>              
+            <Tab heading={<TabHeading><Icon type="Entypo" name="images" /></TabHeading>}>              
               <LicenseInformationScreen licenseImages={this.state.licenseImages} personId={this.state.personId}
                     licenseInsuranceInfo={this.state.licenseInsuranceInfo} token={this.state.tokenRequestModel.Token}
                     reloadLicenseImages={this.getLicenseInformation} />
@@ -78,8 +77,7 @@ export default class DriverScreen extends Component {
                               personId={this.state.personId} navigation={this.props.navigation}/>          
             </Tab> 
           </Tabs>  
-        </Content>
-       </Container>     
+        </View>   
     );
   }
 

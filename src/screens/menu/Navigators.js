@@ -8,10 +8,11 @@ import DriverNavigator from '../navigators/DriverNavigator'
 import WriteCeturScreen from '../WriteCeturScreen'
 import SettingScreen from '../SettingScreen'
 import ExitScreen from '../ExitScreen'
+import GorevTakip from "../GorevTakip";
 import ChangePasswordScreen from '../ChangePasswordScreen'
 import {  Button, Text } from 'native-base';
 
-var backgroundColor="#37C1CC";
+var backgroundColor="#4983B7";
 var headerTintColor="#fff";
 var menuTitle=require('./../../data/MenuTitles.json');
 
@@ -109,6 +110,20 @@ export const MainScreenStackNavigator = createStackNavigator({
       screen: ChangePasswordScreen,
       navigationOptions: ({ navigation }) => ({
         title: menuTitle.ChangePasswordScreenTitle,
+        headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
+        headerStyle: {
+          backgroundColor: backgroundColor,
+        },
+        headerTintColor: '#fff',
+      }),
+    },
+  });
+
+  export const MissionTrack = createStackNavigator({
+    GorevTakip: {
+      screen: GorevTakip,
+      navigationOptions: ({ navigation }) => ({
+        title: "Görev Takip",
         headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
         headerStyle: {
           backgroundColor: backgroundColor,

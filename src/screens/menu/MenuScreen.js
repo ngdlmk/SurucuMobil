@@ -9,6 +9,7 @@ import {MainScreenStackNavigator,
   WriteCeturScreenStackNavigator,
   SettingScreenStackNavigator,
   ChangePasswordScreenStackNavigator,
+  MissionTrack,
   ExitScreenStackNavigator} 
 from './Navigators'
 
@@ -58,10 +59,23 @@ const MenuScreen = createDrawerNavigator({
     },
   },
   Screen8: {
+    screen: MissionTrack,
+    navigationOptions: {
+      drawerLabel: menuTitle.GorevTakipTitle,
+    },
+  },
+  Screen9: {
     screen: ExitScreenStackNavigator,
     navigationOptions: {
       drawerLabel: menuTitle.ExitScreenTitle,
     },
+  },
+},{
+  drawerBackgroundColor: "#4983B7",
+  contentOptions: {
+    activeTintColor: '#fff',
+    activeBackgroundColor: "#48B3CF",
+    inactiveTintColor: 'rgba(255,255,255,0.5)'
   },
 });
  
