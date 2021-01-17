@@ -1,46 +1,52 @@
 import React, { Component } from 'react';
-import { Button,  Text} from 'native-base';
+import { Fab, Icon } from 'native-base';
 import Utils from '../../../common/utils';
-import {PuantajService} from '../../../services';
-import {AddWehicleImageRequestModel} from '../../../../src/models';
-import {Alert,View,Image,ScrollView} from 'react-native';
+import { PuantajService } from '../../../services';
+import { AddWehicleImageRequestModel } from '../../../../src/models';
+import { Alert, View, Image, ScrollView } from 'react-native';
 import { SliderBox } from 'react-native-image-slider-box';
 import * as Constant from '../../../data/Constants';
 
 export default class ImmsImageScreen extends Component {
     utils = new Utils();
-    puantajService=new PuantajService();
+    puantajService = new PuantajService();
 
     constructor(props) {
         super(props);
-    
-        this.imageOperation=this.imageOperation.bind(this);
+
+        this.imageOperation = this.imageOperation.bind(this);
     }
 
     render() {
-        const immsImages=[];
+        const immsImages = [];
         this.props.immsImages.map((image, index) => (
             immsImages.push(image.fullPath)
         ));
 
         return (
-            <ScrollView style={{paddingLeft: 5, paddingRight: 5, paddingTop: 2}}>           
-                <Button light onPress={this.imageOperation}>
-                    <Text>Yeni IMMS Resmi Ekle</Text>
-                </Button> 
-                {
-                    immsImages.map(image => {
-                        return (
-                            <Image resizeMode="contain" style={{width: "100%", height: 300}} source={{uri: image}} />
-                        )
-                    })      
-                }       
-            </ScrollView>
+            <View style={{flex: 1}}>
+                <ScrollView contentContainerStyle={{ flexGrow: 1, marginTop: 10 }}>
+                    {
+                        immsImages.map(image => {
+                            return (
+                                <Image resizeMode="contain" style={{ width: "100%", height: 300 }} source={{ uri: image }} />
+                            )
+                        })
+                    }
+                </ScrollView>
+                <Fab
+                    direction="up"
+                    style={{ backgroundColor: '#4983B7' }}
+                    position="bottomRight"
+                    onPress={this.imageOperation}>
+                    <Icon name="cloudupload" type="AntDesign" />
+                </Fab>
+            </View>
         );
-     }
+    }
 
-     //api methods
-     addImmsImage(image) {
+    //api methods
+    addImmsImage(image) {
         var request = new AddWehicleImageRequestModel();
         request.Token = this.props.token;
         request.ID = this.props.carImmsResponse.ID;
@@ -56,7 +62,7 @@ export default class ImmsImageScreen extends Component {
         request.isDateRequired = "false";
 
         this.puantajService.addImage(request).then(responseJson => {
-            this.props.reloadImmsImages(this.props.selectedCarId,true);
+            this.props.reloadImmsImages(this.props.selectedCarId, true);
 
             Alert.alert("IMMS resmi eklendi");
         }).catch((error) => {
@@ -65,12 +71,12 @@ export default class ImmsImageScreen extends Component {
     }
 
     //other operation
-    imageOperation(){
-        if(this.props.selectedCarId===0){
-            Alert.alert(Constant.ErrorText,"Araç seçiniz")
+    imageOperation() {
+        if (this.props.selectedCarId === 0) {
+            Alert.alert(Constant.ErrorText, "Araç seçiniz")
             return;
         }
 
-        this.utils.pickImage().then(t=> this.addImmsImage(t))
-     }
-   }
+        this.utils.pickImage().then(t => this.addImmsImage(t))
+    }
+}

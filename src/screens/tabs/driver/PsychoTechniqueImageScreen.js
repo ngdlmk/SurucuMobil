@@ -1,50 +1,60 @@
 import React, { Component } from 'react';
-import { Button,  Content, Text} from 'native-base';
-import {View } from 'react-native';
-import { SliderBox } from 'react-native-image-slider-box';
+import { Fab, Icon } from 'native-base';
+import { View, ScrollView, Image } from 'react-native'
 
 export default class PsychoTechniqueImageScreen extends Component {
     constructor(props) {
         super(props);
-    
-        this.addPsychoTechniqueImage=this.addPsychoTechniqueImage.bind(this);
+
+        this.addPsychoTechniqueImage = this.addPsychoTechniqueImage.bind(this);
     }
 
     render() {
-        const psychoTechniqueImages=[];
+        const psychoTechniqueImages = [];
         this.props.psychoTechniqueImages.map((image, index) => (
             psychoTechniqueImages.push(image.fullPath)
         ));
-
         return (
-            <View>   
-                <Content>
-                    <Button light onPress={this.addPsychoTechniqueImage}>
-                        <Text>Yeni Psikoteknik Resmi Ekle</Text>
-                    </Button>       
-                    <SliderBox images={psychoTechniqueImages} sliderBoxHeight={400} style={{paddingTop: 30 }}/>
-                </Content>  
+            <View style={{ flex: 1 }}>
+                <ScrollView contentContainerStyle={{ flexGrow: 1, marginTop: 10 }}>
+                    {
+                        psychoTechniqueImages.map(image => {
+                            return (
+                                <>
+                                    <Image resizeMode="contain" style={{ width: "100%", height: 300 }} source={{ uri: image }} />
+                                </>
+                            )
+                        })
+                    }
+                </ScrollView>
+                <Fab
+                    direction="up"
+                    style={{ backgroundColor: '#4983B7' }}
+                    position="bottomRight"
+                    onPress={this.addPsychoTechniqueImage}>
+                    <Icon name="cloudupload" type="AntDesign" />
+                </Fab> 
             </View>
         );
-     }
+    }
 
-     addPsychoTechniqueImage(){
+    addPsychoTechniqueImage() {
         this.props.navigation.navigate('PsychoTechniqueImageModal',
-        {
-           psychoTechniqueInsuranceInfo: this.props.psychoTechniqueInsuranceInfo,
-           token: this.props.token,
-           personId:this.props.personId
-         }
-       )
-     }
+            {
+                psychoTechniqueInsuranceInfo: this.props.psychoTechniqueInsuranceInfo,
+                token: this.props.token,
+                personId: this.props.personId
+            }
+        )
+    }
 
-     componentDidMount() {
+    componentDidMount() {
         this.focusListener = this.props.navigation.addListener("didFocus", () => {
-            this.props.reloadPsychoTechniqueImages(this.props.personId,true);
+            this.props.reloadPsychoTechniqueImages(this.props.personId, true);
         });
-      }
-      
-      componentWillUnmount() {
+    }
+
+    componentWillUnmount() {
         this.focusListener.remove();
-      }
-   }
+    }
+}

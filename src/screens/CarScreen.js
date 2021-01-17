@@ -203,7 +203,6 @@ export default class CarScreen extends Component {
                 selectedTab:isSelectedTab?2:0
             });
             if (responseJson.Data.imageList.length > 0) {
-                console.log("licence image", responseJson.Data.imageList)
                 this.setState({
                     licenseImages: responseJson.Data.imageList
                 });

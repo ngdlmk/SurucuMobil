@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Text} from 'native-base';
+import { Button, Text, Fab, Icon} from 'native-base';
 import { SliderBox } from 'react-native-image-slider-box';
 import Utils from '../../../common/utils';
 import {PuantajService} from '../../../services';
@@ -22,20 +22,25 @@ export default class CarImageScreen extends Component {
         this.props.carImages.map((image, index) => (
             carImages.push(image.fullPath)
         ));
-
         return (
-            <ScrollView style={{paddingLeft: 5, paddingRight: 5, paddingTop: 2}}>           
-                <Button light onPress={this.imageOperation}>
-                    <Text>Yeni Araç Resmi Ekle</Text>
-                </Button>
-                {
-                    carImages.map(image => {
-                        return (
-                            <Image resizeMode="contain" style={{width: "100%", height: 300}} source={{uri: image}} />
-                        )
-                    })      
-                }       
-            </ScrollView>
+            <View style={{flex: 1}}> 
+                <ScrollView contentContainerStyle={{flexGrow: 1, marginTop: 10}}>           
+                    {
+                        carImages.map(image => {
+                            return (
+                                <Image resizeMode="contain" style={{width: "100%", height: 300}} source={{uri: image}} />
+                            )
+                        })      
+                    }       
+                </ScrollView>
+                <Fab
+                    direction="up"
+                    style={{ backgroundColor: '#4983B7' }}
+                    position="bottomRight"
+                    onPress={this.imageOperation}>
+                    <Icon name="cloudupload" type="AntDesign" />
+                </Fab> 
+            </View>
         );
      }
 

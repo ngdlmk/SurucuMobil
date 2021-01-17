@@ -70,17 +70,6 @@ const GorevTakip = () => {
         const y = location.coords.longitude
         return { x, y }
     }
-    /* const getVoyages = (routeId) => {
-        const params  = {
-            carId: selectedCar.CarId,
-            projectId: selectedProject.ProjectId,
-            routeId: routeId
-        }
-
-        mapService.getVoyages(params).then(res => {
-            console.log(res)
-        })
-    } */
     const getStoredData = async () => {
         const data = await AsyncStorage.getItem("mission-info")
         if (data) {
@@ -92,13 +81,7 @@ const GorevTakip = () => {
             setStoredData(pData)
         }
     }
-    useEffect(() => {
-        console.log("stored data", storedData)
-        console.log("car", selectedCar)
-        console.log("project", selectedProject)
-        console.log("route", selectedRoute)
-        console.log("direction", selectedDirection)
-    })
+
     useEffect(() => {
         //AsyncStorage.removeItem("mission-info")
         getStoredData()

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button,  Text} from 'native-base';
+import { Button, Text, Fab, Icon} from 'native-base';
 import Utils from '../../../common/utils';
 import {PuantajService} from '../../../services';
 import {AddWehicleImageRequestModel} from '../../../../src/models';
@@ -22,20 +22,25 @@ export default class LicenseImageScreen extends Component {
         this.props.licenseImages.map((image, index) => (
             licenseImages.push(image.fullPath)
         ));
-        console.log("images", this.props.licenseImages)
         return (
-            <ScrollView style={{paddingLeft: 5, paddingRight: 5, paddingTop: 2}}>         
-                <Button light onPress={this.imageOperation}>
-                    <Text>Yeni Ruhsat Resmi Ekle</Text>
-                </Button> 
-                {
-                    licenseImages.map(image => {
-                        return (
-                            <Image resizeMode="contain" style={{width: "100%", height: 300}} source={{uri: image}} />
-                        )
-                    })      
-                }
-            </ScrollView>
+            <View style={{flex: 1}}>
+                <ScrollView contentContainerStyle={{flexGrow: 1, marginTop: 10}}>         
+                    {
+                        licenseImages.map(image => {
+                            return (
+                                <Image resizeMode="contain" style={{width: "100%", height: 300}} source={{uri: image}} />
+                            )
+                        })      
+                    }
+                </ScrollView>
+                <Fab
+                    direction="up"
+                    style={{ backgroundColor: '#4983B7' }}
+                    position="bottomRight"
+                    onPress={this.imageOperation}>
+                    <Icon name="cloudupload" type="AntDesign" />
+                </Fab> 
+            </View>
         );
      }
 
